@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Bot, LogOut, ShieldCheck, UserCheck, Users, Trophy } from 'lucide-react';
+import logoImg from '../../assets/logo.jpg';
 
 export const Navbar = ({ onOpenAuthModal }) => {
   const { currentUser, userTeam, logout, switchUserFast } = useAuth();
@@ -42,19 +43,19 @@ export const Navbar = ({ onOpenAuthModal }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand / Logo */}
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 p-[2px] shadow-lg shadow-blue-500/20">
-            <div className="h-full w-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-              <Bot className="h-5 w-5 text-cyan-400" />
-            </div>
-          </div>
+          <img
+            src={logoImg}
+            alt="Team Bellas Artes Bots"
+            className="h-10 w-10 rounded-full object-cover border-2 border-blue-500/50 shadow-md shadow-blue-500/30 ring-2 ring-blue-500/20"
+          />
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-black text-lg tracking-wider text-white">CBA WRO</span>
+              <span className="font-black text-lg tracking-wider text-white">TEAM BELLAS ARTES</span>
               <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                Venezuela
+                BOTS
               </span>
             </div>
-            <p className="text-xs text-slate-400 hidden sm:block">Bitácora Técnica & Seguimiento de Competencia</p>
+            <p className="text-xs text-slate-400 hidden sm:block">Bitácora Técnica & Seguimiento WRO</p>
           </div>
         </div>
 

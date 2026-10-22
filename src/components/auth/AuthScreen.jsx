@@ -17,6 +17,7 @@ import {
   CheckCircle2,
   Cpu
 } from 'lucide-react';
+import logoImg from '../../assets/logo.jpg';
 
 export const AuthScreen = () => {
   const { login, register, switchUserFast } = useAuth();
@@ -84,20 +85,20 @@ export const AuthScreen = () => {
 
         {/* Header de Identidad */}
         <div className="relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 p-[2px] shadow-xl shadow-blue-600/20">
-              <div className="h-full w-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-                <Bot className="h-6 w-6 text-cyan-400" />
-              </div>
-            </div>
+          <div className="flex items-center gap-4">
+            <img
+              src={logoImg}
+              alt="Team Bellas Artes Bots"
+              className="h-16 w-16 rounded-full object-cover border-2 border-blue-500/60 shadow-2xl shadow-blue-500/30 ring-4 ring-blue-500/15"
+            />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-black text-xl tracking-wider text-white">CBA WRO</span>
-                <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                  Venezuela
+                <span className="font-black text-xl sm:text-2xl tracking-wider text-white">TEAM BELLAS ARTES</span>
+                <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/40">
+                  BOTS
                 </span>
               </div>
-              <p className="text-xs text-slate-400">World Robot Olympiad Tracking Platform</p>
+              <p className="text-xs text-slate-400">WRO Venezuela Competition Tracking</p>
             </div>
           </div>
 
@@ -167,6 +168,19 @@ export const AuthScreen = () => {
         <div className="w-full max-w-md space-y-6">
           {/* Header del Formulario */}
           <div>
+            {/* Logo en versión móvil cuando el banner lateral está arriba */}
+            <div className="flex items-center gap-3 mb-5 lg:hidden">
+              <img
+                src={logoImg}
+                alt="Team Bellas Artes Bots"
+                className="h-12 w-12 rounded-full object-cover border-2 border-blue-500/50 shadow-lg shadow-blue-500/20"
+              />
+              <div>
+                <h3 className="font-black text-sm text-white">TEAM BELLAS ARTES BOTS</h3>
+                <p className="text-[11px] text-slate-400">WRO Venezuela Competition Tracking</p>
+              </div>
+            </div>
+
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               {mode === 'login' ? 'Iniciar Sesión' : 'Crear una Cuenta'}
             </h2>
