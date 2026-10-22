@@ -32,10 +32,11 @@ export const ParentDashboard = () => {
   const activeSession = sessions.find(s => s.id === activeSessionId) || sessions[0] || null;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fadeIn">
       {/* Cabecera del Representante */}
-      <div className="rounded-2xl border border-slate-800/80 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-950 p-6 shadow-xl">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="rounded-3xl border border-slate-800/80 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-950 p-6 sm:p-7 shadow-2xl relative overflow-hidden">
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div className="flex items-center gap-4">
             <div className={`h-16 w-16 rounded-2xl bg-gradient-to-tr ${userTeam.color} p-[2px] shadow-lg`}>
               <div className="h-full w-full bg-slate-950 rounded-[14px] flex items-center justify-center">

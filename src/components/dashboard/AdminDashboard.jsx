@@ -59,15 +59,17 @@ export const AdminDashboard = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fadeIn">
       {/* Banner Superior Profesor */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-800 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-800/80 gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-purple-400 uppercase tracking-wider mb-1">
-            <ShieldCheck className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-xs font-bold text-purple-400 uppercase tracking-wider mb-1.5">
+            <span className="p-1 rounded-md bg-purple-500/10 border border-purple-500/20">
+              <ShieldCheck className="w-3.5 h-3.5" />
+            </span>
             Panel de Control del Profesor / Administrador
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white">
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
             Gestión y Seguimiento Semanal de Equipos
           </h1>
           <p className="text-sm text-slate-400 mt-1">
@@ -77,7 +79,7 @@ export const AdminDashboard = () => {
 
         <button
           onClick={startNewSession}
-          className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/30 transition cursor-pointer self-start sm:self-auto"
+          className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xl shadow-blue-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer self-start sm:self-auto"
         >
           <PlusCircle className="w-4 h-4" />
           Nueva Sesión de Bitácora
@@ -103,23 +105,23 @@ export const AdminDashboard = () => {
                   setActiveSessionId(null);
                   setIsCreatingNew(false);
                 }}
-                className={`p-3.5 rounded-xl border text-left transition flex flex-col justify-between ${
+                className={`p-4 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between cursor-pointer ${
                   isSelected
-                    ? 'bg-blue-600/15 border-blue-500 shadow-md shadow-blue-500/20'
-                    : 'bg-slate-900/60 border-slate-800 hover:bg-slate-900 hover:border-slate-700'
+                    ? 'bg-blue-600/20 border-blue-500 shadow-lg shadow-blue-500/25 scale-[1.03] ring-1 ring-blue-500/50'
+                    : 'bg-slate-900/60 border-slate-800/80 hover:bg-slate-900 hover:border-slate-700 hover:-translate-y-1'
                 }`}
               >
                 <div>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
-                    t.categoriaId === 'junior' ? 'bg-rose-500/10 text-rose-400' : 'bg-cyan-500/10 text-cyan-400'
+                  <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                    t.categoriaId === 'junior' ? 'bg-rose-500/15 text-rose-400 border border-rose-500/20' : 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/20'
                   }`}>
                     {cat?.nombre}
                   </span>
-                  <div className="font-bold text-sm text-white mt-2 truncate">{t.nombre}</div>
+                  <div className="font-black text-sm text-white mt-2.5 truncate">{t.nombre}</div>
                 </div>
-                <div className="text-[11px] text-slate-400 mt-2 truncate flex items-center gap-1">
-                  <Bot className="w-3 h-3 text-slate-500" />
-                  {t.robotDefault}
+                <div className="text-[11px] text-slate-400 mt-2.5 truncate flex items-center gap-1.5">
+                  <Bot className="w-3.5 h-3.5 text-slate-500" />
+                  <span>{t.robotDefault}</span>
                 </div>
               </button>
             );
