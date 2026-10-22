@@ -58,48 +58,13 @@ export const Navbar = ({ onOpenAuthModal }) => {
           </div>
         </div>
 
-        {/* Demo Fast Switcher & Profile */}
+        {/* Profile & Logout */}
         <div className="flex items-center gap-3">
           {currentUser ? (
             <>
-              {/* Selector Rápido de Demostración */}
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs">
-                <span className="text-slate-500 font-medium mr-1">Probar como:</span>
-                <button
-                  onClick={() => switchUserFast('user_admin')}
-                  className={`px-2 py-0.5 rounded transition ${
-                    currentUser.rol === 'admin'
-                      ? 'bg-purple-600 text-white font-semibold'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  Profesor
-                </button>
-                <button
-                  onClick={() => switchUserFast('user_alumno_robotex')}
-                  className={`px-2 py-0.5 rounded transition ${
-                    currentUser.rol === 'alumno'
-                      ? 'bg-blue-600 text-white font-semibold'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  Alumno (Robotex)
-                </button>
-                <button
-                  onClick={() => switchUserFast('user_repre_robotex')}
-                  className={`px-2 py-0.5 rounded transition ${
-                    currentUser.rol === 'representante'
-                      ? 'bg-emerald-600 text-white font-semibold'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  Representante
-                </button>
-              </div>
-
               {/* Usuario actual */}
-              <div className="flex items-center gap-2.5 pl-2 border-l border-slate-800">
-                <div className="text-right hidden md:block">
+              <div className="flex items-center gap-2.5">
+                <div className="text-right hidden sm:block">
                   <div className="text-sm font-semibold text-slate-200 leading-tight">
                     {currentUser.nombre} {currentUser.apellido}
                   </div>
@@ -120,20 +85,14 @@ export const Navbar = ({ onOpenAuthModal }) => {
                 <button
                   onClick={logout}
                   title="Cerrar Sesión"
-                  className="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-slate-800 transition cursor-pointer"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Salir</span>
                 </button>
               </div>
             </>
-          ) : (
-            <button
-              onClick={onOpenAuthModal}
-              className="px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-500 hover:to-indigo-500 transition shadow-lg shadow-blue-600/25"
-            >
-              Iniciar Sesión / Registro
-            </button>
-          )}
+          ) : null}
         </div>
       </div>
     </header>

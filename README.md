@@ -59,12 +59,10 @@ npm run build
 
 ---
 
-## 👥 Credenciales de Prueba
+## 👥 Acceso Inicial del Sistema
 
-| Rol | Correo | Contraseña | Equipo Vinculado |
+| Rol | Correo | Contraseña | Notas |
 | :--- | :--- | :--- | :--- |
-| **Profesor (Admin)** | `admin@cbawro.edu` | `admin` | *Acceso Global* |
-| **Alumno** | `carlos@robotex.edu` | `123` | *Robotex (Elementary)* |
-| **Representante** | `elena@representantes.edu` | `123` | *Robotex (Elementary)* |
+| **Profesor (Admin)** | `admin@cbawro.edu` | `admin` | Acceso global para cargar y gestionar las bitácoras de todos los equipos. |
 
-*Nota: También puedes usar el selector rápido "Probar como" en la barra de navegación o registrarte como alumno/representante de cualquiera de los otros equipos.*
+*Nota: La plataforma inicia completamente limpia (0 bitácoras de prueba). Los alumnos y representantes pueden crearse su propia cuenta desde la pestaña **"Registro Nuevo"** seleccionando su equipo de robótica.*

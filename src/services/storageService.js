@@ -1,9 +1,9 @@
 import { BITACORAS_INICIALES, CATEGORIAS, EQUIPOS, USUARIOS_INICIALES } from '../data/initialData';
 
 const STORAGE_KEYS = {
-  BITACORAS: 'cba_wro_bitacoras_v1',
-  USERS: 'cba_wro_users_v1',
-  EQUIPOS: 'cba_wro_equipos_v1'
+  BITACORAS: 'cba_wro_bitacoras_v2',
+  USERS: 'cba_wro_users_v2',
+  EQUIPOS: 'cba_wro_equipos_v2'
 };
 
 // Convierte tiempo 'mm:ss' o 'ss' a segundos numéricos para comparaciones
@@ -18,8 +18,16 @@ export const timeToSeconds = (timeStr) => {
   return parseFloat(timeStr) || 99999;
 };
 
-// Inicialización de LocalStorage con datos por defecto
+// Inicialización de LocalStorage con datos por defecto limpios
 export const initStorage = () => {
+  // Limpiar versiones anteriores de datos de prueba
+  if (localStorage.getItem('cba_wro_bitacoras_v1')) {
+    localStorage.removeItem('cba_wro_bitacoras_v1');
+  }
+  if (localStorage.getItem('cba_wro_users_v1')) {
+    localStorage.removeItem('cba_wro_users_v1');
+  }
+
   if (!localStorage.getItem(STORAGE_KEYS.BITACORAS)) {
     localStorage.setItem(STORAGE_KEYS.BITACORAS, JSON.stringify(BITACORAS_INICIALES));
   }

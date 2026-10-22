@@ -275,49 +275,32 @@ export const AuthScreen = () => {
                 </button>
               </form>
 
-              {/* Botones de Acceso Rápido para Demostración */}
+              {/* Acceso Rápido para Profesor/Admin */}
               <div className="pt-6 border-t border-slate-800/80">
                 <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 text-center mb-3">
-                  Accesos Rápidos de Prueba (1 Clic)
+                  Acceso Administrador Preconfigurado
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => switchUserFast('user_admin')}
-                    className="p-3 rounded-xl bg-slate-900/90 border border-purple-500/30 hover:border-purple-500 hover:bg-purple-500/10 transition text-left cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-purple-400" />
-                      <div className="text-xs font-bold text-purple-300">Profesor</div>
+                <button
+                  type="button"
+                  onClick={() => switchUserFast('user_admin')}
+                  className="w-full p-3.5 rounded-xl bg-slate-900/90 border border-purple-500/30 hover:border-purple-500 hover:bg-purple-500/10 transition flex items-center justify-between cursor-pointer group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-purple-500/20 text-purple-400">
+                      <ShieldCheck className="w-5 h-5" />
                     </div>
-                    <div className="text-[10px] text-slate-500 mt-1">Control Global</div>
-                  </button>
+                    <div className="text-left">
+                      <div className="text-xs font-bold text-purple-300">Entrar como Profesor (Admin)</div>
+                      <div className="text-[10px] text-slate-400 mt-0.5">Correo: admin@cbawro.edu • Clave: admin</div>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-purple-400 group-hover:translate-x-1 transition" />
+                </button>
 
-                  <button
-                    type="button"
-                    onClick={() => switchUserFast('user_alumno_robotex')}
-                    className="p-3 rounded-xl bg-slate-900/90 border border-blue-500/30 hover:border-blue-500 hover:bg-blue-500/10 transition text-left cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Bot className="w-4 h-4 text-blue-400" />
-                      <div className="text-xs font-bold text-blue-300">Alumno</div>
-                    </div>
-                    <div className="text-[10px] text-slate-500 mt-1">Robotex (Elem)</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => switchUserFast('user_repre_robotex')}
-                    className="p-3 rounded-xl bg-slate-900/90 border border-emerald-500/30 hover:border-emerald-500 hover:bg-emerald-500/10 transition text-left cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-emerald-400" />
-                      <div className="text-xs font-bold text-emerald-300">Representante</div>
-                    </div>
-                    <div className="text-[10px] text-slate-500 mt-1">Con Ranking</div>
-                  </button>
-                </div>
+                <p className="text-[11px] text-slate-500 text-center mt-3">
+                  Los alumnos y representantes deben registrarse en la pestaña <strong>Registro Nuevo</strong> seleccionando su equipo correspondiente.
+                </p>
               </div>
             </div>
           ) : (

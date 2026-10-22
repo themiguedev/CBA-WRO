@@ -224,8 +224,19 @@ export const AdminDashboard = () => {
               teamName={selectedTeam?.nombre}
             />
           ) : (
-            <div className="p-8 rounded-2xl border border-slate-800 bg-slate-900/40 text-center text-slate-400">
-              Selecciona una sesión de la lista o crea una nueva para comenzar a ingresar tiempos y puntuaciones.
+            <div className="p-12 rounded-2xl border border-slate-800 bg-slate-900/40 text-center">
+              <Bot className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+              <h3 className="text-base font-bold text-white">Sin bitácoras para {selectedTeam?.nombre}</h3>
+              <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+                Aún no has registrado sesiones de entrenamiento o competencias para este equipo.
+              </p>
+              <button
+                onClick={startNewSession}
+                className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/30 transition cursor-pointer"
+              >
+                <PlusCircle className="w-4 h-4" />
+                Registrar Primera Semana (10 Rondas)
+              </button>
             </div>
           )}
         </div>
