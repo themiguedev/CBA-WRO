@@ -14,9 +14,8 @@ export const AuthProvider = ({ children }) => {
         return null;
       }
     }
-    // Default demo: Admin / Profesor para acceso inicial rápido
-    const users = getUsers();
-    return users.find(u => u.rol === 'admin') || users[0];
+    // Por defecto inicia en la pantalla completa de login
+    return null;
   });
 
   useEffect(() => {
