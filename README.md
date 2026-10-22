@@ -46,6 +46,11 @@ Diseñado y estructurado fielmente a partir del formato oficial de la **Bitácor
 
 ## 📦 Instalación y Ejecución Local
 
+### Opción 1: Con scripts de Windows (Recomendado)
+* **Iniciar el servidor:** Haz doble clic en `iniciar.bat` (instalará dependencias automáticamente si es necesario y abrirá el navegador).
+* **Detener el servidor:** Haz doble clic en `detener.bat` (cerrará los procesos activos de los puertos de Vite).
+
+### Opción 2: Desde la terminal
 ```bash
 # Instalar dependencias
 npm install
