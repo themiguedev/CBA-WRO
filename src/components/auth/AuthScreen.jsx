@@ -143,18 +143,6 @@ export const AuthScreen = () => {
               </p>
             </div>
           </div>
-
-          <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-            <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400 mt-0.5">
-              <ShieldCheck className="w-4 h-4" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-white">Control de Roles con Permisos</h4>
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                Edición total para profesores; consultas privadas y enfocadas para alumnos y representantes.
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* Footer Izquierdo */}
