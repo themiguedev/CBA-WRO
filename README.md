@@ -1,61 +1,88 @@
-# CBA WRO Tracker 🤖🇻🇪
+# Sistema club de robotica CBA 🤖🇻🇪
 
-Sistema web moderno, minimalista y responsivo para el seguimiento, control semanal y evaluación de desempeño de los equipos de robótica para entrenamientos y Regionales de la **WRO (World Robot Olympiad) Venezuela**.
+Plataforma web moderna, minimalista y responsiva diseñada para el seguimiento técnico, control semanal de entrenamientos y evaluación de desempeño de los equipos de robótica del **Colegio Bellas Artes (Team Bellas Artes Bots)** con miras a los torneos y Regionales de la **WRO (World Robot Olympiad) Venezuela**.
 
-Diseñado y estructurado fielmente a partir del formato oficial de la **Bitácora de Funcionalidad Técnica** de 10 rondas.
+El sistema digitaliza fielmente el formato oficial de la **Bitácora de Funcionalidad Técnica** de 10 rondas por equipo.
 
 ---
 
-## 🚀 Características Principales
+## 🔐 Cuenta de Administrador del Sistema
 
-1. **Digitalización exacta de la Bitácora de Funcionalidad Técnica**:
-   - Matriz de 10 rondas dividida en bloques (Rondas 1–5 y 6–10).
-   - Control de **Tiempo** (`mm:ss`), **Puntaje** (0–120) y **Observaciones de Ingeniería** (registro de fallas mecánicas/sensores y soluciones implementadas).
+Para acceder con todos los privilegios de gestión técnica y supervisión docente:
+
+| Campo | Valor |
+| :--- | :--- |
+| **Usuario / Correo:** | `admin@cbawro.edu` |
+| **Contraseña:** | `admin` |
+| **Rol:** | **Profesor / Administrador Principal** |
+| **Acceso:** | Control total de edición de bitácoras de 10 rondas, puntuaciones (0–120 pts), cronometraje de tiempos (`mm:ss`), registro de fallas mecánicas/sensores y soluciones implementadas para todos los equipos. |
+
+> [!TIP]
+> En la pantalla de inicio de sesión existe un botón de **"Acceso Rápido Administrador"** que permite iniciar sesión automáticamente con esta cuenta sin necesidad de tipear las credenciales.
+
+---
+
+## 👥 Cuentas de Alumnos y Representantes
+
+- **Registro de Alumnos:** Pueden registrarse desde la pestaña **"Registro Nuevo"** seleccionando su equipo asignado. Tienen acceso de consulta a su bitácora técnica, mejor resultado y soluciones de ingeniería.
+- **Registro de Representantes:** Pueden registrarse seleccionando el equipo de su representado. Tienen acceso a la bitácora de su equipo más el **Leaderboard / Clasificación General** por categoría.
+
+---
+
+## 🚀 Equipos y Categorías Preconfigurados
+
+### Categoría Elementary
+- 🤖 **Robotex**
+- 🤖 **Pinbots**
+- 🤖 **Cyberminds**
+- 🤖 **Bluemachine**
+- 🤖 **Catatumbots**
+
+### Categoría Junior
+- 🚀 **Cyberbots**
+
+---
+
+## 📋 Características Principales
+
+1. **Digitalización exacta de la Bitácora de Funcionalidad Técnica:**
+   - Estructura de 10 rondas dividida en bloques (Rondas 1–5 y 6–10).
+   - Control de tiempo exacto (`mm:ss`), puntaje oficial (0–120) y bitácora de ingeniería (falla presentada vs. solución técnica aplicada).
    - Selector de modalidad de evento: **Entrenamiento / Práctica** o **Regional WRO**.
-   - Algoritmo de cálculo automático del **Mejor Resultado** (regla WRO: mayor puntaje; menor tiempo como desempate).
+   - Algoritmo de desempate oficial WRO: mayor puntaje primero; menor tiempo como criterio de desempate.
 
-2. **Categorías y Equipos Oficiales Preconfigurados**:
-   - **Categoría Elementary**:
-     - *Robotex*
-     - *Pinbots*
-     - *Cyberminds*
-     - *Bluemachine*
-     - *Catatumbots*
-   - **Categoría Junior**:
-     - *Cyberbots*
+2. **Módulo de Clasificación y Rendimiento (Leaderboard):**
+   - Tabla de posiciones en vivo filtrable por categoría (Elementary y Junior).
+   - Detección automática del mejor intento histórico por equipo.
 
-3. **Arquitectura de Roles**:
-   - **Profesor / Administrador**: Edición y control total de tiempos, bitácoras y puntuaciones de todos los equipos.
-   - **Alumnos**: Consulta exclusiva de su equipo asignado (Tarjeta destacada de Mejor Resultado histórico + Historial semanal con fallas y soluciones técnicas).
-   - **Representantes**: Consulta de su equipo + **Módulo Exclusivo de Clasificación (Leaderboard)** por categoría para evaluar el rendimiento relativo y preparación competitiva.
-
-4. **Autenticación y Registro Dinámico**:
-   - Registro para Alumnos y Representantes con selección directa de su equipo desde un menú interactivo categorizado.
-   - Selector rápido de demostración en barra superior para alternar entre roles al instante.
+3. **Arquitectura con Roles Diferenciados:**
+   - **Profesor / Administrador:** Carga, edición y guardado de bitácoras de todos los equipos.
+   - **Alumno:** Visualización enfocada en el progreso técnico de su propio robot.
+   - **Representante:** Seguimiento familiar y comparativa general de clasificación.
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-- **Frontend**: React 19 + Vite
-- **Estilos**: Tailwind CSS v4 (modo oscuro minimalista de alto contraste)
-- **Iconografía**: Lucide React
-- **Persistencia**: LocalStorage reactivo desacoplado con datos iniciales precargados
+- **Frontend:** React 19 + Vite
+- **Estilos:** Tailwind CSS v4 (interfaz limpia, moderna y de alto contraste)
+- **Iconos:** Lucide React
+- **Persistencia:** LocalStorage reactivo desacoplado con datos iniciales precargados
 
 ---
 
-## 📦 Instalación y Ejecución Local
+## 📦 Ejecución y Puesta en Marcha
 
 ### Opción 1: Con scripts de Windows (Recomendado)
-* **Iniciar el servidor:** Haz doble clic en `iniciar.bat` (instalará dependencias automáticamente si es necesario y abrirá el navegador).
-* **Detener el servidor:** Haz doble clic en `detener.bat` (cerrará los procesos activos de los puertos de Vite).
+- **Iniciar el sistema:** Doble clic en `iniciar.bat` (o el acceso directo `INICIAR_SICEBA.bat.lnk` en el Escritorio). Se instalarán dependencias si es necesario y se abrirá el navegador automáticamente.
+- **Detener el sistema:** Doble clic en `detener.bat` (o `DETENER_SICEBA.bat.lnk` en el Escritorio).
 
 ### Opción 2: Desde la terminal
 ```bash
 # Instalar dependencias
 npm install
 
-# Iniciar servidor de desarrollo local
+# Iniciar servidor de desarrollo
 npm run dev
 
 # Compilar para producción
@@ -64,10 +91,7 @@ npm run build
 
 ---
 
-## 👥 Acceso Inicial del Sistema
-
-| Rol | Correo | Contraseña | Notas |
-| :--- | :--- | :--- | :--- |
-| **Profesor (Admin)** | `admin@cbawro.edu` | `admin` | Acceso global para cargar y gestionar las bitácoras de todos los equipos. |
-
-*Nota: La plataforma inicia completamente limpia (0 bitácoras de prueba). Los alumnos y representantes pueden crearse su propia cuenta desde la pestaña **"Registro Nuevo"** seleccionando su equipo de robótica.*
+## 📌 Ubicación de Archivos en el Escritorio
+Se ha dejado una copia directa de esta documentación y las credenciales en tu escritorio:
+- `D:\Usuarios\UCE.FCBA\Desktop\README.md`
+- `D:\Usuarios\UCE.FCBA\Desktop\CREDENCIALES_ADMIN_SISTEMA.txt`
