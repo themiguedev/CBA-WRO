@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { getTeams, getCategories } from '../../services/storageService';
+import { getTeams } from '../../services/storageService';
 import {
   Bot,
   Users,
@@ -22,7 +22,6 @@ import logoImg from '../../assets/logo.jpg';
 export const AuthScreen = () => {
   const { login, register, switchUserFast } = useAuth();
   const teams = getTeams();
-  const categories = getCategories();
 
   const [mode, setMode] = useState('login'); // 'login' | 'register'
   const [errorMsg, setErrorMsg] = useState('');
@@ -76,12 +75,12 @@ export const AuthScreen = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col lg:grid lg:grid-cols-12 selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen w-full bg-slate-100 flex flex-col lg:grid lg:grid-cols-12 selection:bg-blue-600 selection:text-white">
       {/* Columna Izquierda: Banner & Identidad WRO (Desktop & Tablet) */}
-      <div className="relative lg:col-span-5 xl:col-span-6 bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950/40 p-8 sm:p-12 lg:p-16 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-800/80 overflow-hidden">
+      <div className="relative lg:col-span-5 xl:col-span-6 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 p-8 sm:p-12 lg:p-16 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-blue-900/60 overflow-hidden text-white">
         {/* Glows decorativos */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
 
         {/* Header de Identidad */}
         <div className="relative z-10">
@@ -89,22 +88,22 @@ export const AuthScreen = () => {
             <img
               src={logoImg}
               alt="Team Bellas Artes Bots"
-              className="h-16 w-16 rounded-full object-cover border-2 border-blue-500/60 shadow-2xl shadow-blue-500/30 ring-4 ring-blue-500/15"
+              className="h-16 w-16 rounded-full object-cover border-2 border-white/80 shadow-2xl shadow-blue-500/40 ring-4 ring-blue-500/30"
             />
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-black text-xl sm:text-2xl tracking-wider text-white">TEAM BELLAS ARTES</span>
-                <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/40">
+                <span className="text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-blue-500/30 text-cyan-300 border border-cyan-400/30">
                   BOTS
                 </span>
               </div>
-              <p className="text-xs text-slate-400">WRO Venezuela Competition Tracking</p>
+              <p className="text-xs text-blue-200/80 font-medium mt-0.5">WRO Venezuela Competition Tracking</p>
             </div>
           </div>
 
           <div className="mt-12 sm:mt-16 max-w-lg">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-4">
-              <Sparkles className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/20 border border-cyan-400/30 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
               Temporada Oficial de Robótica
             </div>
 
@@ -112,7 +111,7 @@ export const AuthScreen = () => {
               Bitácora Técnica & Control Semanal de Equipos
             </h1>
 
-            <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base text-blue-100/80 leading-relaxed font-normal">
               Plataforma digital para la evaluación de rondas, análisis de tiempos, fallas mecánicas y soluciones de ingeniería rumbo a las Regionales WRO.
             </p>
           </div>
@@ -120,25 +119,25 @@ export const AuthScreen = () => {
 
         {/* Puntos Clave de la Plataforma */}
         <div className="relative z-10 my-8 space-y-3 max-w-md hidden sm:block">
-          <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-            <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400 mt-0.5">
+          <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15">
+            <div className="p-2 rounded-xl bg-blue-500/30 text-cyan-300 mt-0.5">
               <Cpu className="w-4 h-4" />
             </div>
             <div>
               <h4 className="text-xs font-bold text-white">Digitalización Fiel de 10 Rondas</h4>
-              <p className="text-[11px] text-slate-400 mt-0.5">
+              <p className="text-[11px] text-blue-100/70 mt-0.5">
                 Seguimiento de tiempos, puntajes y bitácora de ingeniería por ronda para cada robot.
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
-            <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 mt-0.5">
+          <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15">
+            <div className="p-2 rounded-xl bg-amber-400/30 text-amber-300 mt-0.5">
               <Trophy className="w-4 h-4" />
             </div>
             <div>
               <h4 className="text-xs font-bold text-white">Clasificación por Categorías WRO</h4>
-              <p className="text-[11px] text-slate-400 mt-0.5">
+              <p className="text-[11px] text-blue-100/70 mt-0.5">
                 Evaluación comparativa de récords en Elementary y Junior para representantes.
               </p>
             </div>
@@ -146,13 +145,13 @@ export const AuthScreen = () => {
         </div>
 
         {/* Footer Izquierdo */}
-        <div className="relative z-10 text-xs text-slate-500 flex items-center justify-between pt-6 border-t border-slate-800/60">
+        <div className="relative z-10 text-xs text-blue-200/70 flex items-center justify-between pt-6 border-t border-white/15">
           <span>Equipos: Robotex, Pinbots, Cyberminds, Bluemachine, Catatumbots, Cyberbots</span>
         </div>
       </div>
 
-      {/* Columna Derecha: Formulario de Login / Registro a Pantalla Completa */}
-      <div className="lg:col-span-7 xl:col-span-6 flex items-center justify-center p-6 sm:p-10 lg:p-16 relative">
+      {/* Columna Derecha: Formulario de Login / Registro a Pantalla Completa (Luminoso) */}
+      <div className="lg:col-span-7 xl:col-span-6 flex items-center justify-center p-6 sm:p-10 lg:p-16 relative bg-slate-50/90">
         <div className="w-full max-w-md space-y-6">
           {/* Header del Formulario */}
           <div>
@@ -161,25 +160,25 @@ export const AuthScreen = () => {
               <img
                 src={logoImg}
                 alt="Team Bellas Artes Bots"
-                className="h-12 w-12 rounded-full object-cover border-2 border-blue-500/50 shadow-lg shadow-blue-500/20"
+                className="h-12 w-12 rounded-full object-cover border-2 border-blue-600 shadow-md shadow-blue-500/20"
               />
               <div>
-                <h3 className="font-black text-sm text-white">TEAM BELLAS ARTES BOTS</h3>
-                <p className="text-[11px] text-slate-400">WRO Venezuela Competition Tracking</p>
+                <h3 className="font-black text-sm text-slate-900">TEAM BELLAS ARTES BOTS</h3>
+                <p className="text-[11px] text-slate-500">WRO Venezuela Competition Tracking</p>
               </div>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
               {mode === 'login' ? 'Iniciar Sesión' : 'Crear una Cuenta'}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-slate-600 mt-1 font-medium">
               {mode === 'login'
                 ? 'Ingresa tus credenciales para acceder a tu panel de seguimiento.'
                 : 'Regístrate como alumno o representante seleccionando tu equipo.'}
             </p>
 
             {/* Selector de Pestañas: Login vs Registro */}
-            <div className="flex p-1 rounded-xl bg-slate-900 border border-slate-800 mt-5">
+            <div className="flex p-1.5 rounded-2xl bg-slate-200/80 border border-slate-300 mt-5">
               <button
                 type="button"
                 onClick={() => {
@@ -187,13 +186,13 @@ export const AuthScreen = () => {
                   setErrorMsg('');
                   setSuccessMsg('');
                 }}
-                className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition flex items-center justify-center gap-2 cursor-pointer ${
+                className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer ${
                   mode === 'login'
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-700 hover:text-slate-900'
                 }`}
               >
-                <LogIn className="w-3.5 h-3.5" />
+                <LogIn className="w-4 h-4" />
                 Iniciar Sesión
               </button>
 
@@ -204,13 +203,13 @@ export const AuthScreen = () => {
                   setErrorMsg('');
                   setSuccessMsg('');
                 }}
-                className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition flex items-center justify-center gap-2 cursor-pointer ${
+                className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer ${
                   mode === 'register'
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-700 hover:text-slate-900'
                 }`}
               >
-                <UserPlus className="w-3.5 h-3.5" />
+                <UserPlus className="w-4 h-4" />
                 Registro Nuevo
               </button>
             </div>
@@ -218,14 +217,14 @@ export const AuthScreen = () => {
 
           {/* Notificaciones de Error / Éxito */}
           {errorMsg && (
-            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-medium text-center">
+            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold text-center">
               {errorMsg}
             </div>
           )}
 
           {successMsg && (
-            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium text-center flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-4 h-4" />
+            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold text-center flex items-center justify-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               {successMsg}
             </div>
           )}
@@ -235,42 +234,42 @@ export const AuthScreen = () => {
             <div className="space-y-6">
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-extrabold text-slate-800 mb-1.5">
                     Correo Electrónico
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                     <input
                       type="email"
                       required
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       placeholder="admin@cbawro.edu o tu correo de alumno"
-                      className="w-full pl-10 pr-3.5 py-3 text-xs rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"
+                      className="w-full pl-10 pr-3.5 py-3 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 focus:outline-none transition shadow-sm font-medium"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-extrabold text-slate-800 mb-1.5">
                     Contraseña
                   </label>
                   <div className="relative">
-                    <KeyRound className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                    <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                     <input
                       type="password"
                       required
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-3.5 py-3 text-xs rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"
+                      className="w-full pl-10 pr-3.5 py-3 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 focus:outline-none transition shadow-sm font-medium"
                     />
                   </div>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xl shadow-blue-600/30 transition flex items-center justify-center gap-2 cursor-pointer mt-2"
+                  className="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md shadow-blue-500/25 transition flex items-center justify-center gap-2 cursor-pointer mt-2"
                 >
                   <span>Ingresar a la Plataforma</span>
                   <ArrowRight className="w-4 h-4" />
@@ -278,29 +277,29 @@ export const AuthScreen = () => {
               </form>
 
               {/* Acceso Rápido para Profesor/Admin */}
-              <div className="pt-6 border-t border-slate-800/80">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 text-center mb-3">
-                  Acceso Administrador Preconfigurado
+              <div className="pt-6 border-t border-slate-200">
+                <div className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 text-center mb-3">
+                  Acceso Docente Preconfigurado
                 </div>
 
                 <button
                   type="button"
                   onClick={() => switchUserFast('user_admin')}
-                  className="w-full p-3.5 rounded-xl bg-slate-900/90 border border-purple-500/30 hover:border-purple-500 hover:bg-purple-500/10 transition flex items-center justify-between cursor-pointer group"
+                  className="w-full p-4 rounded-2xl bg-purple-50/80 border border-purple-200 hover:bg-purple-100/90 transition flex items-center justify-between cursor-pointer group shadow-sm"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-purple-500/20 text-purple-400">
+                    <div className="p-2 rounded-xl bg-purple-600 text-white shadow-sm">
                       <ShieldCheck className="w-5 h-5" />
                     </div>
                     <div className="text-left">
-                      <div className="text-xs font-bold text-purple-300">Entrar como Profesor (Admin)</div>
-                      <div className="text-[10px] text-slate-400 mt-0.5">Correo: admin@cbawro.edu • Clave: admin</div>
+                      <div className="text-xs font-black text-purple-900">Entrar como Profesor (Admin)</div>
+                      <div className="text-[11px] text-purple-700 font-medium mt-0.5">admin@cbawro.edu • Clave: admin</div>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-purple-400 group-hover:translate-x-1 transition" />
+                  <ArrowRight className="w-4 h-4 text-purple-700 group-hover:translate-x-1 transition" />
                 </button>
 
-                <p className="text-[11px] text-slate-500 text-center mt-3">
+                <p className="text-[11px] text-slate-500 text-center mt-3 font-medium">
                   Los alumnos y representantes deben registrarse en la pestaña <strong>Registro Nuevo</strong> seleccionando su equipo correspondiente.
                 </p>
               </div>
@@ -310,17 +309,17 @@ export const AuthScreen = () => {
             <form onSubmit={handleRegisterSubmit} className="space-y-4">
               {/* Selección de Rol */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-extrabold text-slate-800 mb-1.5">
                   ¿Qué tipo de usuario eres?
                 </label>
                 <div className="grid grid-cols-2 gap-2.5">
                   <button
                     type="button"
                     onClick={() => setRegRol('alumno')}
-                    className={`p-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                    className={`p-3 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer ${
                       regRol === 'alumno'
-                        ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-600/30'
-                        : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                     }`}
                   >
                     <Bot className="w-4 h-4" />
@@ -330,10 +329,10 @@ export const AuthScreen = () => {
                   <button
                     type="button"
                     onClick={() => setRegRol('representante')}
-                    className={`p-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer ${
+                    className={`p-3 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer ${
                       regRol === 'representante'
-                        ? 'bg-emerald-600 text-white border-emerald-500 shadow-md shadow-emerald-600/30'
-                        : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+                        : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                     }`}
                   >
                     <Users className="w-4 h-4" />
@@ -345,24 +344,24 @@ export const AuthScreen = () => {
               {/* Nombre y Apellido */}
               <div className="grid grid-cols-2 gap-2.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-extrabold text-slate-800 mb-1.5">
                     Nombre
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                    <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                     <input
                       type="text"
                       required
                       value={regNombre}
                       onChange={(e) => setRegNombre(e.target.value)}
                       placeholder="Carlos"
-                      className="w-full pl-10 pr-3 py-2.5 text-xs rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-600 focus:border-blue-500 focus:outline-none"
+                      className="w-full pl-10 pr-3 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none font-medium shadow-sm"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-extrabold text-slate-800 mb-1.5">
                     Apellido
                   </label>
                   <input
@@ -371,87 +370,87 @@ export const AuthScreen = () => {
                     value={regApellido}
                     onChange={(e) => setRegApellido(e.target.value)}
                     placeholder="Mendoza"
-                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-600 focus:border-blue-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none font-medium shadow-sm"
                   />
                 </div>
               </div>
 
               {/* Desplegable de Equipos */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
+                <label className="block text-xs font-extrabold text-slate-800 mb-1.5 flex items-center justify-between">
                   <span>Selecciona tu Equipo</span>
-                  <span className="text-[10px] text-blue-400">WRO Venezuela</span>
+                  <span className="text-[10px] text-blue-700 font-bold">WRO Venezuela</span>
                 </label>
                 <div className="relative">
                   <select
                     value={regEquipoId}
                     onChange={(e) => setRegEquipoId(e.target.value)}
-                    className="w-full px-3.5 py-3 text-xs rounded-xl bg-slate-900 border border-slate-800 text-white focus:border-blue-500 focus:outline-none appearance-none cursor-pointer"
+                    className="w-full px-3.5 py-3 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 focus:border-blue-600 focus:outline-none appearance-none cursor-pointer font-bold shadow-sm"
                   >
-                    <optgroup label="Categoría Elementary (8 - 12 años)" className="bg-slate-950 text-cyan-400 font-bold">
+                    <optgroup label="Categoría Elementary (8 - 12 años)" className="bg-slate-100 text-blue-900 font-bold">
                       {teams
                         .filter(t => t.categoriaId === 'elementary')
                         .map(t => (
-                          <option key={t.id} value={t.id} className="text-white font-normal">
+                          <option key={t.id} value={t.id} className="text-slate-900 font-medium">
                             {t.nombre} (Robot: {t.robotDefault})
                           </option>
                         ))}
                     </optgroup>
-                    <optgroup label="Categoría Junior (13 - 15 años)" className="bg-slate-950 text-rose-400 font-bold">
+                    <optgroup label="Categoría Junior (13 - 15 años)" className="bg-slate-100 text-rose-900 font-bold">
                       {teams
                         .filter(t => t.categoriaId === 'junior')
                         .map(t => (
-                          <option key={t.id} value={t.id} className="text-white font-normal">
+                          <option key={t.id} value={t.id} className="text-slate-900 font-medium">
                             {t.nombre} (Robot: {t.robotDefault})
                           </option>
                         ))}
                     </optgroup>
                   </select>
-                  <Layers className="w-4 h-4 text-slate-500 absolute right-3.5 top-3.5 pointer-events-none" />
+                  <Layers className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none" />
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1">
+                <p className="text-[10px] text-slate-500 mt-1 font-medium">
                   Tu usuario quedará vinculado a este equipo para consultar sus bitácoras de entrenamiento.
                 </p>
               </div>
 
               {/* Correo y Contraseña */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-extrabold text-slate-800 mb-1.5">
                   Correo Electrónico
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                   <input
                     type="email"
                     required
                     value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)}
                     placeholder="usuario@robotica.edu"
-                    className="w-full pl-10 pr-3.5 py-2.5 text-xs rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-600 focus:border-blue-500 focus:outline-none"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none font-medium shadow-sm"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-extrabold text-slate-800 mb-1.5">
                   Contraseña
                 </label>
                 <div className="relative">
-                  <KeyRound className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                  <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                   <input
                     type="password"
                     required
                     value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)}
                     placeholder="Define tu contraseña"
-                    className="w-full pl-10 pr-3.5 py-2.5 text-xs rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-600 focus:border-blue-500 focus:outline-none"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none font-medium shadow-sm"
                   />
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-xl shadow-emerald-600/30 transition flex items-center justify-center gap-2 cursor-pointer mt-2"
+                className="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-500/25 transition flex items-center justify-center gap-2 cursor-pointer mt-2"
               >
                 <span>Completar Registro y Entrar</span>
                 <ArrowRight className="w-4 h-4" />
