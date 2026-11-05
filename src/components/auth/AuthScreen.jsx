@@ -199,24 +199,24 @@ export const AuthScreen = () => {
       <div className="lg:col-span-7 xl:col-span-6 flex items-center justify-center p-6 sm:p-10 lg:p-16 relative bg-gradient-to-br from-slate-50 via-sky-50/25 to-indigo-50/20">
         <div className="w-full max-w-md space-y-6">
           {/* Header del Formulario */}
-          <div>
+          <div className="text-center">
             {/* Logo en versión móvil cuando el banner lateral está arriba */}
-            <div className="flex items-center gap-3 mb-5 lg:hidden">
+            <div className="flex items-center justify-center gap-3 mb-5 lg:hidden">
               <img
                 src={logoImg}
                 alt="Team Bellas Artes Bots"
                 className="h-12 w-12 rounded-full object-cover border-2 border-blue-600 shadow-md shadow-blue-500/20"
               />
-              <div>
+              <div className="text-left">
                 <h3 className="font-black text-sm text-slate-900">TEAM BELLAS ARTES BOTS</h3>
                 <p className="text-[11px] text-slate-500">WRO Venezuela Competition Tracking</p>
               </div>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight text-center">
               {mode === 'login' ? 'Iniciar Sesión' : 'Crear una Cuenta'}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 mt-1 font-medium">
+            <p className="text-xs sm:text-sm text-slate-600 mt-1.5 font-medium text-center">
               {mode === 'login'
                 ? 'Ingresa tus credenciales para acceder a tu panel de seguimiento.'
                 : 'Regístrate como alumno o representante seleccionando tu equipo.'}
