@@ -18,6 +18,7 @@ import {
   X
 } from 'lucide-react';
 import logoImg from '../../assets/logo.jpg';
+import { CoinLogo } from '../ui/CoinLogo';
 
 export const AuthScreen = () => {
   const { login, register } = useAuth();
@@ -166,10 +167,9 @@ export const AuthScreen = () => {
         {/* Header de Identidad */}
         <div className="relative z-10">
           <div className="flex items-center gap-4">
-            <img
-              src={logoImg}
-              alt="Team Bellas Artes Bots"
-              className="h-16 w-16 rounded-full object-cover border-2 border-white/80 shadow-2xl shadow-blue-500/40 ring-4 ring-blue-500/30"
+            <CoinLogo
+              size="w-16 h-16 sm:w-20 sm:h-20"
+              ringClass="border-2 border-white/90 shadow-2xl shadow-blue-500/50 ring-4 ring-blue-500/30"
             />
             <div>
               <div className="flex items-center gap-2">
@@ -202,10 +202,9 @@ export const AuthScreen = () => {
           <div className="text-center">
             {/* Logo en versión móvil cuando el banner lateral está arriba */}
             <div className="flex items-center justify-center gap-3 mb-5 lg:hidden">
-              <img
-                src={logoImg}
-                alt="Team Bellas Artes Bots"
-                className="h-12 w-12 rounded-full object-cover border-2 border-blue-600 shadow-md shadow-blue-500/20"
+              <CoinLogo
+                size="w-12 h-12"
+                ringClass="border-2 border-blue-600 shadow-md shadow-blue-500/20"
               />
               <div className="text-left">
                 <h3 className="font-black text-sm text-slate-900">TEAM BELLAS ARTES BOTS</h3>

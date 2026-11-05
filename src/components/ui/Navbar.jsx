@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Bot, LogOut, ShieldCheck, UserCheck, Users } from 'lucide-react';
 import logoImg from '../../assets/logo.jpg';
+import { CoinLogo } from './CoinLogo';
 
 export const Navbar = () => {
   const { currentUser, userTeam, logout } = useAuth();
@@ -47,12 +48,11 @@ export const Navbar = () => {
         {/* Brand / Logo */}
         <div className="flex items-center gap-3">
           <div className="relative">
-            <img
-              src={logoImg}
-              alt="Team Bellas Artes Bots"
-              className="h-11 w-11 rounded-full object-cover border-2 border-blue-600 shadow-md shadow-blue-500/30 ring-2 ring-blue-200"
+            <CoinLogo
+              size="w-11 h-11"
+              ringClass="border-2 border-blue-600 shadow-md shadow-blue-500/30 ring-2 ring-blue-200"
             />
-            <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-white" title="En línea" />
+            <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-white z-10" title="En línea" />
           </div>
           <div>
             <div className="flex items-center gap-2">
