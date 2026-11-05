@@ -9,6 +9,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  deployments: write
 
 concurrency:
   group: "pages"
@@ -23,6 +24,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Clear stuck Pages deployments
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Checking for pending deployments..."
+          DEPS=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/deployments?environment=github-pages")
+          
+          for id in $(echo "$DEPS" | jq -r '.[].id // empty'); do
+            echo "Removing deployment $id"
+            curl -s -X DELETE -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/deployments/$id" || true
+          done
 
       - name: Set up Node
         uses: actions/setup-node@v4
