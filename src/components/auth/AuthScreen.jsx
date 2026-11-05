@@ -10,11 +10,8 @@ import {
   Mail,
   User,
   Layers,
-  Sparkles,
-  Trophy,
   ArrowRight,
   CheckCircle2,
-  Cpu,
   Pencil,
   Plus,
   Check,
@@ -161,7 +158,7 @@ export const AuthScreen = () => {
   return (
     <div className="min-h-screen w-full bg-slate-100 flex flex-col lg:grid lg:grid-cols-12 selection:bg-blue-600 selection:text-white">
       {/* Columna Izquierda: Banner & Identidad WRO (Desktop & Tablet) */}
-      <div className="relative lg:col-span-5 xl:col-span-6 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 p-8 sm:p-12 lg:p-16 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-blue-900/60 overflow-hidden text-white">
+      <div className="relative lg:col-span-5 xl:col-span-6 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 p-8 sm:p-12 lg:p-16 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-blue-900/60 overflow-hidden text-white">
         {/* Glows decorativos */}
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
@@ -186,10 +183,6 @@ export const AuthScreen = () => {
           </div>
 
           <div className="mt-12 sm:mt-16 max-w-lg">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/20 border border-cyan-400/30 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
-              Temporada Oficial de Robótica
-            </div>
 
             <h1 className="text-3xl sm:text-4xl xl:text-5xl font-black text-white leading-tight tracking-tight">
               Bitácora Técnica & Control Semanal de Equipos
@@ -199,38 +192,6 @@ export const AuthScreen = () => {
               Plataforma digital para la evaluación de rondas, análisis de tiempos, fallas mecánicas y soluciones de ingeniería rumbo a las Regionales WRO.
             </p>
           </div>
-        </div>
-
-        {/* Puntos Clave de la Plataforma */}
-        <div className="relative z-10 my-8 space-y-3 max-w-md hidden sm:block">
-          <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15">
-            <div className="p-2 rounded-xl bg-blue-500/30 text-cyan-300 mt-0.5">
-              <Cpu className="w-4 h-4" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-white">Digitalización Fiel de 10 Rondas</h4>
-              <p className="text-[11px] text-blue-100/70 mt-0.5">
-                Seguimiento de tiempos, puntajes y bitácora de ingeniería por ronda para cada robot.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15">
-            <div className="p-2 rounded-xl bg-amber-400/30 text-amber-300 mt-0.5">
-              <Trophy className="w-4 h-4" />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-white">Clasificación por Categorías WRO</h4>
-              <p className="text-[11px] text-blue-100/70 mt-0.5">
-                Evaluación comparativa de récords en Elementary y Junior para representantes.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer Izquierdo */}
-        <div className="relative z-10 text-xs text-blue-200/70 flex items-center justify-between pt-6 border-t border-white/15">
-          <span className="line-clamp-2">Equipos: {teams.map(t => t.nombre).join(', ')}</span>
         </div>
       </div>
 
