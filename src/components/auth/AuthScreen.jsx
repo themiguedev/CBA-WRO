@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { getTeams } from '../../services/storageService';
+import { getTeams, updateTeam, addTeam } from '../../services/storageService';
 import {
   Bot,
   Users,
-  ShieldCheck,
   LogIn,
   UserPlus,
   KeyRound,
@@ -15,13 +14,25 @@ import {
   Trophy,
   ArrowRight,
   CheckCircle2,
-  Cpu
+  Cpu,
+  Pencil,
+  Plus,
+  Check,
+  X
 } from 'lucide-react';
 import logoImg from '../../assets/logo.jpg';
 
 export const AuthScreen = () => {
-  const { login, register, switchUserFast } = useAuth();
-  const teams = getTeams();
+  const { login, register } = useAuth();
+  const [teams, setTeams] = useState(() => getTeams());
+
+  useEffect(() => {
+    const handleTeamsUpdate = () => {
+      setTeams(getTeams());
+    };
+    window.addEventListener('cba_teams_updated', handleTeamsUpdate);
+    return () => window.removeEventListener('cba_teams_updated', handleTeamsUpdate);
+  }, []);
 
   const [mode, setMode] = useState('login'); // 'login' | 'register'
   const [errorMsg, setErrorMsg] = useState('');
@@ -38,6 +49,79 @@ export const AuthScreen = () => {
   const [regPassword, setRegPassword] = useState('');
   const [regRol, setRegRol] = useState('alumno'); // 'alumno' | 'representante'
   const [regEquipoId, setRegEquipoId] = useState(teams[0]?.id || 'robotex');
+
+  // Estado para editar nombre de equipo registrado
+  const [isEditingTeam, setIsEditingTeam] = useState(false);
+  const [editedTeamName, setEditedTeamName] = useState('');
+
+  // Estado para registrar nuevo equipo (por registrar)
+  const [isCreatingTeam, setIsCreatingTeam] = useState(false);
+  const [newTeamName, setNewTeamName] = useState('');
+  const [newTeamCat, setNewTeamCat] = useState('elementary');
+  const [newTeamRobot, setNewTeamRobot] = useState('');
+
+  const [teamNotice, setTeamNotice] = useState('');
+
+  // Asegurar que si el equipo seleccionado no existe, usar el primero disponible
+  useEffect(() => {
+    if (teams.length > 0 && !teams.some(t => t.id === regEquipoId)) {
+      setRegEquipoId(teams[0].id);
+    }
+  }, [teams, regEquipoId]);
+
+  const selectedTeam = teams.find(t => t.id === regEquipoId) || teams[0];
+
+  const handleStartEditTeam = () => {
+    if (selectedTeam) {
+      setEditedTeamName(selectedTeam.nombre);
+      setIsEditingTeam(true);
+      setIsCreatingTeam(false);
+      setTeamNotice('');
+    }
+  };
+
+  const handleSaveEditedTeamName = (e) => {
+    e?.preventDefault();
+    if (!editedTeamName.trim()) {
+      setTeamNotice('El nombre no puede estar vacío.');
+      return;
+    }
+
+    const updated = updateTeam(selectedTeam.id, { nombre: editedTeamName.trim() });
+    if (updated) {
+      setTeams(getTeams());
+      setIsEditingTeam(false);
+      setTeamNotice(`¡Nombre actualizado a "${updated.nombre}"!`);
+      setTimeout(() => setTeamNotice(''), 3500);
+    }
+  };
+
+  const handleCreateAndSelectNewTeam = (e) => {
+    e?.preventDefault();
+    if (!newTeamName.trim()) {
+      setTeamNotice('Ingresa un nombre para el nuevo equipo.');
+      return;
+    }
+
+    try {
+      const created = addTeam({
+        nombre: newTeamName.trim(),
+        categoriaId: newTeamCat,
+        robotDefault: newTeamRobot.trim() || 'Robot-Pro'
+      });
+
+      const updatedList = getTeams();
+      setTeams(updatedList);
+      setRegEquipoId(created.id);
+      setIsCreatingTeam(false);
+      setNewTeamName('');
+      setNewTeamRobot('');
+      setTeamNotice(`¡Nuevo equipo "${created.nombre}" registrado y seleccionado!`);
+      setTimeout(() => setTeamNotice(''), 4000);
+    } catch (err) {
+      setTeamNotice(err.message || 'Error al registrar nuevo equipo');
+    }
+  };
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -146,12 +230,12 @@ export const AuthScreen = () => {
 
         {/* Footer Izquierdo */}
         <div className="relative z-10 text-xs text-blue-200/70 flex items-center justify-between pt-6 border-t border-white/15">
-          <span>Equipos: Robotex, Pinbots, Cyberminds, Bluemachine, Catatumbots, Cyberbots</span>
+          <span className="line-clamp-2">Equipos: {teams.map(t => t.nombre).join(', ')}</span>
         </div>
       </div>
 
-      {/* Columna Derecha: Formulario de Login / Registro a Pantalla Completa (Luminoso) */}
-      <div className="lg:col-span-7 xl:col-span-6 flex items-center justify-center p-6 sm:p-10 lg:p-16 relative bg-slate-50/90">
+      {/* Columna Derecha: Formulario de Login / Registro a Pantalla Completa (Luminoso con sutil color) */}
+      <div className="lg:col-span-7 xl:col-span-6 flex items-center justify-center p-6 sm:p-10 lg:p-16 relative bg-gradient-to-br from-slate-50 via-sky-50/25 to-indigo-50/20">
         <div className="w-full max-w-md space-y-6">
           {/* Header del Formulario */}
           <div>
@@ -177,8 +261,8 @@ export const AuthScreen = () => {
                 : 'Regístrate como alumno o representante seleccionando tu equipo.'}
             </p>
 
-            {/* Selector de Pestañas: Login vs Registro */}
-            <div className="flex p-1.5 rounded-2xl bg-slate-200/80 border border-slate-300 mt-5">
+            {/* Selector de Pestañas: Login vs Registro con estilo de color */}
+            <div className="flex p-1.5 rounded-2xl bg-slate-200/80 border border-slate-300 mt-5 shadow-inner">
               <button
                 type="button"
                 onClick={() => {
@@ -188,7 +272,7 @@ export const AuthScreen = () => {
                 }}
                 className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer ${
                   mode === 'login'
-                    ? 'bg-blue-600 text-white shadow-sm'
+                    ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white shadow-md shadow-blue-500/25'
                     : 'text-slate-700 hover:text-slate-900'
                 }`}
               >
@@ -205,7 +289,7 @@ export const AuthScreen = () => {
                 }}
                 className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer ${
                   mode === 'register'
-                    ? 'bg-blue-600 text-white shadow-sm'
+                    ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white shadow-md shadow-blue-500/25'
                     : 'text-slate-700 hover:text-slate-900'
                 }`}
               >
@@ -276,29 +360,7 @@ export const AuthScreen = () => {
                 </button>
               </form>
 
-              {/* Acceso Rápido para Profesor/Admin */}
               <div className="pt-6 border-t border-slate-200">
-                <div className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 text-center mb-3">
-                  Acceso Docente Preconfigurado
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => switchUserFast('user_admin')}
-                  className="w-full p-4 rounded-2xl bg-purple-50/80 border border-purple-200 hover:bg-purple-100/90 transition flex items-center justify-between cursor-pointer group shadow-sm"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-xl bg-purple-600 text-white shadow-sm">
-                      <ShieldCheck className="w-5 h-5" />
-                    </div>
-                    <div className="text-left">
-                      <div className="text-xs font-black text-purple-900">Entrar como Profesor (Admin)</div>
-                      <div className="text-[11px] text-purple-700 font-medium mt-0.5">admin@cbawro.edu • Clave: admin</div>
-                    </div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-purple-700 group-hover:translate-x-1 transition" />
-                </button>
-
                 <p className="text-[11px] text-slate-500 text-center mt-3 font-medium">
                   Los alumnos y representantes deben registrarse en la pestaña <strong>Registro Nuevo</strong> seleccionando su equipo correspondiente.
                 </p>
@@ -318,7 +380,7 @@ export const AuthScreen = () => {
                     onClick={() => setRegRol('alumno')}
                     className={`p-3 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer ${
                       regRol === 'alumno'
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-[1.02]'
                         : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                     }`}
                   >
@@ -331,7 +393,7 @@ export const AuthScreen = () => {
                     onClick={() => setRegRol('representante')}
                     className={`p-3 rounded-xl border text-xs font-extrabold transition flex items-center justify-center gap-2 cursor-pointer ${
                       regRol === 'representante'
-                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+                        ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border-emerald-600 shadow-md shadow-emerald-500/25 scale-[1.02]'
                         : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                     }`}
                   >
@@ -375,16 +437,171 @@ export const AuthScreen = () => {
                 </div>
               </div>
 
-              {/* Desplegable de Equipos */}
+              {/* Desplegable de Equipos con Opciones de Edición y Registro */}
               <div>
-                <label className="block text-xs font-extrabold text-slate-800 mb-1.5 flex items-center justify-between">
-                  <span>Selecciona tu Equipo</span>
-                  <span className="text-[10px] text-blue-700 font-bold">WRO Venezuela</span>
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-extrabold text-slate-800">
+                    Selecciona tu Equipo
+                  </label>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (isEditingTeam) {
+                          setIsEditingTeam(false);
+                        } else {
+                          handleStartEditTeam();
+                        }
+                      }}
+                      className="text-[11px] font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 transition cursor-pointer px-2 py-0.5 rounded-lg bg-blue-50 border border-blue-200"
+                      title="Editar el nombre del equipo seleccionado"
+                    >
+                      <Pencil className="w-3 h-3" />
+                      <span>{isEditingTeam ? 'Cerrar edición' : 'Editar nombre'}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCreatingTeam(!isCreatingTeam);
+                        setIsEditingTeam(false);
+                        setTeamNotice('');
+                      }}
+                      className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1 transition cursor-pointer px-2 py-0.5 rounded-lg bg-emerald-50 border border-emerald-200"
+                      title="Registrar un nuevo equipo"
+                    >
+                      <Plus className="w-3 h-3" />
+                      <span>{isCreatingTeam ? 'Cerrar' : 'Nuevo equipo'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Notificación de acción en equipos */}
+                {teamNotice && (
+                  <div className="mb-2 p-2 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-[11px] font-bold flex items-center gap-1.5 animate-fadeIn">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                    <span>{teamNotice}</span>
+                  </div>
+                )}
+
+                {/* Caja de Edición de Nombre del Equipo Registrado */}
+                {isEditingTeam && selectedTeam && (
+                  <div className="mb-3 p-3 rounded-2xl bg-blue-50/80 border border-blue-300 space-y-2 animate-fadeIn shadow-sm">
+                    <div className="text-[11px] font-black text-blue-950 flex items-center gap-1.5">
+                      <Pencil className="w-3.5 h-3.5 text-blue-600" />
+                      <span>Editar nombre para: <strong className="text-blue-800">{selectedTeam.nombre}</strong></span>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={editedTeamName}
+                        onChange={(e) => setEditedTeamName(e.target.value)}
+                        placeholder="Nuevo nombre del equipo"
+                        className="flex-1 px-3 py-1.5 text-xs rounded-xl bg-white border border-blue-300 text-slate-900 focus:border-blue-600 focus:outline-none font-bold"
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        onClick={handleSaveEditedTeamName}
+                        className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer shadow-sm"
+                      >
+                        <Check className="w-3.5 h-3.5" />
+                        Guardar
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsEditingTeam(false)}
+                        className="px-2.5 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition cursor-pointer"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Caja para Registrar Nuevo Equipo (Por Registrar) */}
+                {isCreatingTeam && (
+                  <div className="mb-3 p-3.5 rounded-2xl bg-emerald-50/90 border border-emerald-300 space-y-2.5 animate-fadeIn shadow-sm">
+                    <div className="text-[11px] font-black text-emerald-950 flex items-center gap-1.5">
+                      <Plus className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Registrar Nuevo Equipo (por registrar):</span>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-extrabold text-emerald-900 uppercase block mb-0.5">
+                        Nombre del Equipo *
+                      </label>
+                      <input
+                        type="text"
+                        value={newTeamName}
+                        onChange={(e) => setNewTeamName(e.target.value)}
+                        placeholder="Ej. Megabots CBA"
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-emerald-300 text-slate-900 focus:border-emerald-600 focus:outline-none font-bold"
+                        autoFocus
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-[10px] font-extrabold text-emerald-900 uppercase block mb-0.5">
+                          Categoría WRO
+                        </label>
+                        <select
+                          value={newTeamCat}
+                          onChange={(e) => setNewTeamCat(e.target.value)}
+                          className="w-full px-2.5 py-1.5 text-xs rounded-xl bg-white border border-emerald-300 text-slate-900 focus:border-emerald-600 focus:outline-none font-semibold cursor-pointer"
+                        >
+                          <option value="elementary">Elementary (8-12)</option>
+                          <option value="junior">Junior (13-15)</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-extrabold text-emerald-900 uppercase block mb-0.5">
+                          Robot Oficial
+                        </label>
+                        <input
+                          type="text"
+                          value={newTeamRobot}
+                          onChange={(e) => setNewTeamRobot(e.target.value)}
+                          placeholder="Ej. MegaBot-1"
+                          className="w-full px-2.5 py-1.5 text-xs rounded-xl bg-white border border-emerald-300 text-slate-900 focus:border-emerald-600 focus:outline-none font-medium"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={handleCreateAndSelectNewTeam}
+                        className="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        Registrar y Seleccionar
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsCreatingTeam(false)}
+                        className="px-3 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition cursor-pointer"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="relative">
                   <select
                     value={regEquipoId}
-                    onChange={(e) => setRegEquipoId(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value === '__NEW_TEAM__') {
+                        setIsCreatingTeam(true);
+                        setIsEditingTeam(false);
+                      } else {
+                        setRegEquipoId(e.target.value);
+                        setIsEditingTeam(false);
+                      }
+                    }}
                     className="w-full px-3.5 py-3 text-xs rounded-xl bg-white border border-slate-300 text-slate-900 focus:border-blue-600 focus:outline-none appearance-none cursor-pointer font-bold shadow-sm"
                   >
                     <optgroup label="Categoría Elementary (8 - 12 años)" className="bg-slate-100 text-blue-900 font-bold">
@@ -405,6 +622,9 @@ export const AuthScreen = () => {
                           </option>
                         ))}
                     </optgroup>
+                    <option value="__NEW_TEAM__" className="text-emerald-700 font-extrabold bg-emerald-50">
+                      + Registrar un nuevo equipo...
+                    </option>
                   </select>
                   <Layers className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none" />
                 </div>

@@ -99,10 +99,10 @@ export const BitacoraTable = ({
   const getScoreBadgeClass = (score) => {
     const val = parseFloat(score);
     if (isNaN(val) || score === '') return 'text-slate-400 bg-slate-100 border-slate-200';
-    if (val >= 115) return 'text-emerald-800 bg-emerald-100 border-emerald-300 font-black';
-    if (val >= 90) return 'text-blue-800 bg-blue-100 border-blue-300 font-extrabold';
-    if (val >= 60) return 'text-amber-800 bg-amber-100 border-amber-300 font-bold';
-    return 'text-rose-800 bg-rose-100 border-rose-300 font-semibold';
+    if (val >= 115) return 'text-emerald-900 bg-gradient-to-r from-emerald-100 to-teal-100 border-emerald-300 font-black shadow-sm';
+    if (val >= 90) return 'text-blue-900 bg-gradient-to-r from-blue-100 to-cyan-100 border-blue-300 font-extrabold shadow-sm';
+    if (val >= 60) return 'text-amber-950 bg-gradient-to-r from-amber-100 to-yellow-100 border-amber-300 font-bold shadow-sm';
+    return 'text-rose-900 bg-gradient-to-r from-rose-100 to-red-100 border-rose-300 font-semibold shadow-sm';
   };
 
   // Renderizador de Bloque de Tabla (Rondas 1-5 o 6-10)
@@ -110,15 +110,18 @@ export const BitacoraTable = ({
     const roundsSlice = formData.rondas.slice(startIdx, endIdx);
 
     return (
-      <div className="rounded-2xl border border-slate-300 bg-white overflow-hidden shadow-sm transition-all duration-300">
-        <div className="px-4 py-3 bg-slate-100 border-b border-slate-300 flex items-center justify-between">
+      <div className="rounded-2xl border border-slate-300/90 bg-white overflow-hidden shadow-sm transition-all duration-300 relative">
+        {/* Franja superior de bloque */}
+        <div className="h-1 bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400" />
+
+        <div className="px-4 py-3 bg-gradient-to-r from-slate-100 via-blue-50/20 to-slate-100 border-b border-slate-300 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-blue-600 animate-pulse" />
             <h4 className="text-xs font-black uppercase tracking-wider text-slate-800">
               {title}
             </h4>
           </div>
-          <span className="text-[11px] text-slate-600 font-bold uppercase tracking-wider bg-white px-2 py-0.5 rounded border border-slate-200">
+          <span className="text-[11px] text-blue-800 font-bold uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
             Formato Oficial WRO
           </span>
         </div>
@@ -138,7 +141,7 @@ export const BitacoraTable = ({
                       key={r.numero}
                       className={`p-3 text-center border-r border-slate-300 last:border-r-0 transition-colors ${
                         isBest
-                          ? 'bg-amber-100/90 text-amber-950 font-black'
+                          ? 'bg-gradient-to-b from-amber-200/90 via-amber-100/90 to-amber-50 text-amber-950 font-black'
                           : 'hover:bg-slate-100/60'
                       }`}
                     >
@@ -376,13 +379,16 @@ export const BitacoraTable = ({
   };
 
   return (
-    <div className="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-6 animate-fadeIn">
+    <div className="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-6 animate-fadeIn overflow-hidden relative">
+      {/* Franja superior tecnológica con gradiente de color */}
+      <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 absolute top-0 left-0" />
+
       {/* Encabezado Fiel con Diseño Luminoso */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-slate-200 gap-5">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-slate-200 gap-5 pt-2">
         <div>
           <div className="flex flex-wrap items-center gap-2.5">
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-              <div className="p-2.5 rounded-2xl bg-blue-100 text-blue-700 border border-blue-200 shadow-sm">
+              <div className="p-2.5 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/25">
                 <Flag className="w-5 h-5" />
               </div>
               <span>Bitácora de Funcionalidad técnica</span>
@@ -391,8 +397,8 @@ export const BitacoraTable = ({
             <span
               className={`text-xs px-3.5 py-1 rounded-full font-black uppercase tracking-wider border shadow-sm ${
                 formData.tipoEvento === 'regional'
-                  ? 'bg-amber-100 text-amber-900 border-amber-300'
-                  : 'bg-blue-100 text-blue-900 border-blue-300'
+                  ? 'bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-900 border-amber-300'
+                  : 'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-900 border-blue-300'
               }`}
             >
               {formData.tipoEvento === 'regional' ? '🏆 Regional WRO Oficial' : '🛠️ Entrenamiento / Práctica'}
@@ -405,13 +411,13 @@ export const BitacoraTable = ({
         </div>
 
         {/* Toggle de Modo de Vista (Ficha vs Tarjetas) */}
-        <div className="flex items-center p-1.5 rounded-2xl bg-slate-100 border border-slate-200 self-start lg:self-auto">
+        <div className="flex items-center p-1.5 rounded-2xl bg-slate-100 border border-slate-200 self-start lg:self-auto shadow-inner">
           <button
             type="button"
             onClick={() => setViewMode('table')}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
               viewMode === 'table'
-                ? 'bg-blue-600 text-white shadow-sm'
+                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -423,7 +429,7 @@ export const BitacoraTable = ({
             onClick={() => setViewMode('cards')}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
               viewMode === 'cards'
-                ? 'bg-blue-600 text-white shadow-sm'
+                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -433,47 +439,59 @@ export const BitacoraTable = ({
         </div>
       </div>
 
-      {/* Métricas Resumen de la Sesión en tarjetas claras */}
+      {/* Métricas Resumen de la Sesión en tarjetas con sutil toque de color */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-        <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 shadow-sm">
-          <span className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
-            <TrendingUp className="w-3.5 h-3.5 text-blue-600" /> Promedio Sesión
+        <div className="bg-gradient-to-br from-blue-50/90 via-sky-50/50 to-white p-4 rounded-2xl border border-blue-200/90 shadow-sm">
+          <span className="text-[10px] uppercase font-extrabold text-blue-700 flex items-center gap-1.5">
+            <div className="p-1 rounded-md bg-blue-100 text-blue-700">
+              <TrendingUp className="w-3.5 h-3.5" />
+            </div>
+            Promedio Sesión
           </span>
-          <div className="text-xl font-black text-slate-900 mt-1">
-            {promedioPuntos} <span className="text-xs text-slate-500 font-bold">pts</span>
+          <div className="text-2xl font-black text-slate-900 mt-2">
+            {promedioPuntos} <span className="text-xs text-blue-600 font-bold">pts</span>
           </div>
         </div>
 
-        <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 shadow-sm">
-          <span className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
-            <Award className="w-3.5 h-3.5 text-amber-600" /> Mejor Ronda
+        <div className="bg-gradient-to-br from-amber-50/90 via-yellow-50/50 to-white p-4 rounded-2xl border border-amber-200/90 shadow-sm">
+          <span className="text-[10px] uppercase font-extrabold text-amber-800 flex items-center gap-1.5">
+            <div className="p-1 rounded-md bg-amber-100 text-amber-700">
+              <Award className="w-3.5 h-3.5" />
+            </div>
+            Mejor Ronda
           </span>
-          <div className="text-xl font-black text-amber-600 mt-1">
+          <div className="text-2xl font-black text-amber-600 mt-2">
             {bestRound ? `${bestRound.puntaje} pts (#${bestRound.numero})` : '--'}
           </div>
         </div>
 
-        <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 shadow-sm">
-          <span className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
-            <Clock className="w-3.5 h-3.5 text-blue-600" /> Mejor Tiempo
+        <div className="bg-gradient-to-br from-cyan-50/90 via-sky-50/50 to-white p-4 rounded-2xl border border-cyan-200/90 shadow-sm">
+          <span className="text-[10px] uppercase font-extrabold text-cyan-800 flex items-center gap-1.5">
+            <div className="p-1 rounded-md bg-cyan-100 text-cyan-700">
+              <Clock className="w-3.5 h-3.5" />
+            </div>
+            Mejor Tiempo
           </span>
-          <div className="text-xl font-mono font-bold text-slate-900 mt-1">
+          <div className="text-2xl font-mono font-black text-slate-900 mt-2">
             {bestRound?.tiempo || '--:--'}
           </div>
         </div>
 
-        <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 shadow-sm">
-          <span className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
-            <Zap className="w-3.5 h-3.5 text-emerald-600" /> Completitud
+        <div className="bg-gradient-to-br from-emerald-50/90 via-teal-50/50 to-white p-4 rounded-2xl border border-emerald-200/90 shadow-sm">
+          <span className="text-[10px] uppercase font-extrabold text-emerald-800 flex items-center gap-1.5">
+            <div className="p-1 rounded-md bg-emerald-100 text-emerald-700">
+              <Zap className="w-3.5 h-3.5" />
+            </div>
+            Completitud
           </span>
-          <div className="text-xl font-black text-emerald-700 mt-1">
+          <div className="text-2xl font-black text-emerald-700 mt-2">
             {rondasConDatos.length}/10 <span className="text-xs text-slate-500 font-bold">rondas</span>
           </div>
         </div>
       </div>
 
-      {/* Campos de Encabezado Físico */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
+      {/* Campos de Encabezado Físico con fondo suave */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-gradient-to-r from-slate-50 via-blue-50/30 to-slate-50 p-4 rounded-2xl border border-slate-200">
         <div>
           <label className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1">
             <Calendar className="w-3.5 h-3.5 text-slate-400" /> Fecha

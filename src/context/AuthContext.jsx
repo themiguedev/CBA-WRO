@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getUsers, registerUser, getTeamById, initStorage } from '../services/storageService';
+import { getUsers, registerUser, getTeamById, initStorage, updateTeam, addTeam } from '../services/storageService';
 
 const AuthContext = createContext();
 
@@ -18,6 +18,16 @@ export const AuthProvider = ({ children }) => {
     return null;
   });
 
+  const [teamsVersion, setTeamsVersion] = useState(0);
+
+  useEffect(() => {
+    const handleTeamsUpdate = () => {
+      setTeamsVersion(v => v + 1);
+    };
+    window.addEventListener('cba_teams_updated', handleTeamsUpdate);
+    return () => window.removeEventListener('cba_teams_updated', handleTeamsUpdate);
+  }, []);
+
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('cba_wro_active_user', JSON.stringify(currentUser));
@@ -28,8 +38,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = (email, password) => {
     const users = getUsers();
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const cleanPassword = (password || '').trim();
+
     const found = users.find(
-      u => u.email.toLowerCase() === email.toLowerCase().trim() && u.password === password
+      u => (u.email || '').toLowerCase().trim() === cleanEmail && 
+           (u.password === password || u.password === cleanPassword)
     );
 
     if (found) {
@@ -74,6 +88,18 @@ export const AuthProvider = ({ children }) => {
 
   const userTeam = currentUser?.equipoId ? getTeamById(currentUser.equipoId) : null;
 
+  const updateTeamName = (teamId, newName) => {
+    const updated = updateTeam(teamId, { nombre: newName });
+    setTeamsVersion(v => v + 1);
+    return updated;
+  };
+
+  const registerNewTeam = (teamData) => {
+    const created = addTeam(teamData);
+    setTeamsVersion(v => v + 1);
+    return created;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -82,7 +108,10 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         logout,
-        switchUserFast
+        switchUserFast,
+        updateTeamName,
+        registerNewTeam,
+        teamsVersion
       }}
     >
       {children}

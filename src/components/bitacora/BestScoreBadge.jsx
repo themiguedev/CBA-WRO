@@ -20,10 +20,21 @@ export const BestScoreBadge = ({ best, teamName, categoryName }) => {
   const scorePct = Math.min(100, ((parseFloat(best.puntaje) || 0) / 120) * 100);
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-blue-50/40 p-6 sm:p-7 shadow-md animate-fadeIn">
-      {/* Glow sutil */}
+    <div className={`relative overflow-hidden rounded-3xl border p-6 sm:p-7 shadow-md animate-fadeIn ${
+      isRegional
+        ? 'border-amber-300/80 bg-gradient-to-br from-amber-50/90 via-orange-50/40 to-yellow-50/50'
+        : 'border-blue-200/80 bg-gradient-to-br from-blue-50/90 via-indigo-50/40 to-cyan-50/50'
+    }`}>
+      {/* Franja superior de color */}
+      <div className={`absolute top-0 left-0 right-0 h-1.5 ${
+        isRegional
+          ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-400'
+          : 'bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400'
+      }`} />
+
+      {/* Glows decorativos */}
       <div
-        className={`absolute -top-16 -right-16 w-56 h-56 rounded-full blur-3xl opacity-20 pointer-events-none ${
+        className={`absolute -top-16 -right-16 w-56 h-56 rounded-full blur-3xl opacity-30 pointer-events-none ${
           isRegional ? 'bg-amber-300' : 'bg-blue-300'
         }`}
       />
@@ -34,8 +45,8 @@ export const BestScoreBadge = ({ best, teamName, categoryName }) => {
             <span
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border shadow-sm ${
                 isRegional
-                  ? 'bg-amber-100 text-amber-900 border-amber-300 shadow-amber-100'
-                  : 'bg-blue-100 text-blue-900 border-blue-300 shadow-blue-100'
+                  ? 'bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-900 border-amber-300 shadow-amber-100'
+                  : 'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-900 border-blue-300 shadow-blue-100'
               }`}
             >
               {isRegional ? (
@@ -52,7 +63,7 @@ export const BestScoreBadge = ({ best, teamName, categoryName }) => {
             </span>
 
             {categoryName && (
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700 font-bold shadow-sm">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/90 border border-slate-200 text-slate-700 font-bold shadow-sm">
                 Categoría: {categoryName}
               </span>
             )}
@@ -60,37 +71,37 @@ export const BestScoreBadge = ({ best, teamName, categoryName }) => {
 
           <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
             <span>Récord Histórico:</span>
-            <span className="text-blue-700">
+            <span className="text-blue-700 drop-shadow-sm">
               {teamName}
             </span>
           </h3>
 
           <div className="flex flex-wrap items-center gap-3 text-xs text-slate-700 mt-3 font-medium">
-            <span className="flex items-center gap-1.5 bg-white px-3 py-1 rounded-lg border border-slate-200 shadow-sm">
+            <span className="flex items-center gap-1.5 bg-white/90 px-3 py-1 rounded-lg border border-slate-200/80 shadow-sm">
               <Bot className="w-3.5 h-3.5 text-blue-600" />
               Robot: <strong className="text-slate-900">{best.robot || 'Prototipo'}</strong>
             </span>
-            <span className="flex items-center gap-1.5 bg-white px-3 py-1 rounded-lg border border-slate-200 shadow-sm">
-              <Calendar className="w-3.5 h-3.5 text-slate-500" />
+            <span className="flex items-center gap-1.5 bg-white/90 px-3 py-1 rounded-lg border border-slate-200/80 shadow-sm">
+              <Calendar className="w-3.5 h-3.5 text-indigo-500" />
               Fecha: <strong className="text-slate-900">{best.fecha}</strong>
             </span>
-            <span className="flex items-center gap-1.5 bg-white px-3 py-1 rounded-lg border border-slate-200 shadow-sm">
+            <span className="flex items-center gap-1.5 bg-white/90 px-3 py-1 rounded-lg border border-slate-200/80 shadow-sm">
               <Activity className="w-3.5 h-3.5 text-amber-600" />
               Ronda: <strong className="text-slate-900">#{best.numeroRonda}</strong>
             </span>
             {best.semana && (
-              <span className="flex items-center gap-1.5 bg-white px-3 py-1 rounded-lg border border-slate-200 shadow-sm">
+              <span className="flex items-center gap-1.5 bg-white/90 px-3 py-1 rounded-lg border border-slate-200/80 shadow-sm">
                 Semana: <strong className="text-slate-900">{best.semana}</strong>
               </span>
             )}
           </div>
         </div>
 
-        {/* Telemetría Destacada (Puntaje & Tiempo) */}
-        <div className="flex items-center gap-4 sm:gap-6 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-md self-start lg:self-auto">
+        {/* Telemetría Destacada (Puntaje & Tiempo) con color vibrante */}
+        <div className="flex items-center gap-4 sm:gap-6 bg-white/95 backdrop-blur-sm p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-md self-start lg:self-auto">
           {/* Puntaje */}
           <div>
-            <div className="text-[10px] uppercase tracking-wider font-extrabold text-slate-500 flex items-center gap-1">
+            <div className="text-[10px] uppercase tracking-wider font-extrabold text-amber-800 flex items-center gap-1">
               <Zap className="w-3 h-3 text-amber-600" /> Puntaje WRO
             </div>
             <div className="flex items-baseline gap-1 mt-1">
@@ -102,7 +113,7 @@ export const BestScoreBadge = ({ best, teamName, categoryName }) => {
             {/* Barra mini */}
             <div className="w-24 h-2 bg-slate-100 rounded-full mt-2 overflow-hidden border border-slate-200">
               <div
-                className="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
+                className="h-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 rounded-full"
                 style={{ width: `${scorePct}%` }}
               />
             </div>
@@ -112,7 +123,7 @@ export const BestScoreBadge = ({ best, teamName, categoryName }) => {
 
           {/* Tiempo Desempate */}
           <div>
-            <div className="text-[10px] uppercase tracking-wider font-extrabold text-slate-500 flex items-center gap-1">
+            <div className="text-[10px] uppercase tracking-wider font-extrabold text-blue-800 flex items-center gap-1">
               <Clock className="w-3 h-3 text-blue-600" /> Tiempo Desempate
             </div>
             <div className="flex items-baseline gap-1 mt-1">

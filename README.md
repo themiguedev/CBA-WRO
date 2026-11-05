@@ -17,8 +17,8 @@ Para acceder con todos los privilegios de gestión técnica y supervisión docen
 | **Rol:** | **Profesor / Administrador Principal** |
 | **Acceso:** | Control total de edición de bitácoras de 10 rondas, puntuaciones (0–120 pts), cronometraje de tiempos (`mm:ss`), registro de fallas mecánicas/sensores y soluciones implementadas para todos los equipos. |
 
-> [!TIP]
-> En la pantalla de inicio de sesión existe un botón de **"Acceso Rápido Administrador"** que permite iniciar sesión automáticamente con esta cuenta sin necesidad de tipear las credenciales.
+> [!NOTE]
+> Ingresa estas credenciales directamente en el formulario de inicio de sesión para acceder al panel de control del docente.
 
 ---
 

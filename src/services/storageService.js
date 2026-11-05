@@ -39,6 +39,15 @@ export const initStorage = () => {
   }
 };
 
+// Guardar lista completa de equipos y notificar cambios
+export const saveTeams = (teams) => {
+  localStorage.setItem(STORAGE_KEYS.EQUIPOS, JSON.stringify(teams));
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('cba_teams_updated', { detail: { teams } }));
+  }
+  return teams;
+};
+
 // Obtener Equipos
 export const getTeams = () => {
   initStorage();
@@ -54,6 +63,76 @@ export const getTeams = () => {
 export const getTeamById = (teamId) => {
   const teams = getTeams();
   return teams.find(t => t.id === teamId) || null;
+};
+
+// Actualizar información o nombre de un equipo existente
+export const updateTeam = (teamId, updatedData) => {
+  const teams = getTeams();
+  const index = teams.findIndex(t => t.id === teamId);
+  if (index === -1) return null;
+
+  const current = teams[index];
+  const updated = {
+    ...current,
+    ...updatedData,
+    // Asegurar que el id original no cambie para mantener intactas las relaciones
+    id: current.id,
+    nombre: (updatedData.nombre !== undefined ? updatedData.nombre.trim() : current.nombre)
+  };
+
+  teams[index] = updated;
+  saveTeams(teams);
+  return updated;
+};
+
+// Registrar un nuevo equipo (por registrar)
+export const addTeam = ({ nombre, categoriaId = 'elementary', robotDefault = 'Robot-V1', color = null }) => {
+  const teams = getTeams();
+  const trimmedName = (nombre || '').trim();
+  if (!trimmedName) {
+    throw new Error('El nombre del equipo no puede estar vacío');
+  }
+
+  // Generar ID único amigable
+  const baseSlug = trimmedName.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let id = baseSlug || `equipo_${Date.now()}`;
+  let counter = 1;
+  while (teams.some(t => t.id === id)) {
+    id = `${baseSlug || 'equipo'}_${counter++}`;
+  }
+
+  const GRADIENT_PALETTES = [
+    'from-blue-600 to-cyan-500',
+    'from-amber-500 to-orange-600',
+    'from-emerald-500 to-teal-600',
+    'from-indigo-600 to-blue-500',
+    'from-violet-600 to-purple-600',
+    'from-rose-600 to-red-500',
+    'from-fuchsia-600 to-pink-500',
+    'from-teal-600 to-emerald-500',
+    'from-sky-600 to-blue-700'
+  ];
+  const assignedColor = color || GRADIENT_PALETTES[teams.length % GRADIENT_PALETTES.length];
+
+  const newTeam = {
+    id,
+    nombre: trimmedName,
+    categoriaId,
+    robotDefault: (robotDefault || '').trim() || 'Prototipo-1',
+    color: assignedColor
+  };
+
+  const updatedTeams = [...teams, newTeam];
+  saveTeams(updatedTeams);
+  return newTeam;
+};
+
+// Eliminar un equipo (si no tiene bitácoras asociadas o según administración)
+export const deleteTeam = (teamId) => {
+  const teams = getTeams();
+  const updatedTeams = teams.filter(t => t.id !== teamId);
+  saveTeams(updatedTeams);
+  return updatedTeams;
 };
 
 // Obtener Categorías
@@ -195,7 +274,32 @@ export const getUsers = () => {
   initStorage();
   try {
     const data = localStorage.getItem(STORAGE_KEYS.USERS);
-    return data ? JSON.parse(data) : USUARIOS_INICIALES;
+    let users = data ? JSON.parse(data) : [...USUARIOS_INICIALES];
+
+    // Garantizar que la cuenta administradora exista siempre
+    const adminIndex = users.findIndex(
+      u => u.rol === 'admin' || (u.email && u.email.toLowerCase() === 'admin@cbawro.edu')
+    );
+
+    if (adminIndex === -1) {
+      users = [USUARIOS_INICIALES[0], ...users];
+      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+    } else {
+      let changed = false;
+      if (!users[adminIndex].password) {
+        users[adminIndex].password = 'admin';
+        changed = true;
+      }
+      if (users[adminIndex].rol !== 'admin') {
+        users[adminIndex].rol = 'admin';
+        changed = true;
+      }
+      if (changed) {
+        localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+      }
+    }
+
+    return users;
   } catch {
     return USUARIOS_INICIALES;
   }

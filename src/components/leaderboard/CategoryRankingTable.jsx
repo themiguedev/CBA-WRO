@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getRankingByCategory, getCategories } from '../../services/storageService';
 import {
   Trophy,
@@ -10,6 +10,16 @@ import {
 } from 'lucide-react';
 
 export const CategoryRankingTable = ({ userTeamId = null }) => {
+  const [_teamsVersion, setTeamsVersion] = useState(0);
+
+  useEffect(() => {
+    const handleTeamsUpdate = () => {
+      setTeamsVersion(v => v + 1);
+    };
+    window.addEventListener('cba_teams_updated', handleTeamsUpdate);
+    return () => window.removeEventListener('cba_teams_updated', handleTeamsUpdate);
+  }, []);
+
   const categories = getCategories();
   const [selectedCatId, setSelectedCatId] = useState('elementary');
 
@@ -51,20 +61,23 @@ export const CategoryRankingTable = ({ userTeamId = null }) => {
   };
 
   return (
-    <div className="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-6 animate-fadeIn">
+    <div className="glass-card rounded-3xl p-5 sm:p-7 shadow-sm space-y-6 animate-fadeIn overflow-hidden relative">
+      {/* Franja superior dorada para la clasificación WRO */}
+      <div className="h-1.5 w-full bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-400 absolute top-0 left-0" />
+
       {/* Header del Módulo con Pestañas de Categoría */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-200 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-200 gap-4 pt-2">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2.5 rounded-2xl bg-amber-100 text-amber-800 border border-amber-200 shadow-sm">
-              <Trophy className="w-6 h-6 animate-pulseGlow text-amber-600" />
+            <div className="p-2.5 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-md shadow-amber-500/25">
+              <Trophy className="w-6 h-6 animate-pulseGlow" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                   Clasificación Oficial WRO
                 </h2>
-                <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200 font-extrabold uppercase tracking-wider">
+                <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-900 border border-amber-300 font-extrabold uppercase tracking-wider shadow-sm">
                   Live Ranking
                 </span>
               </div>
@@ -85,14 +98,14 @@ export const CategoryRankingTable = ({ userTeamId = null }) => {
                 onClick={() => setSelectedCatId(cat.id)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                   isActive
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 scale-[1.02]'
+                    ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white shadow-md shadow-blue-500/25 scale-[1.02]'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
                 }`}
               >
                 <span>{cat.nombre}</span>
                 <span
                   className={`text-[10px] px-2 py-0.5 rounded-full font-mono ${
-                    isActive ? 'bg-blue-800 text-blue-100' : 'bg-slate-200 text-slate-700'
+                    isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'
                   }`}
                 >
                   {cat.edad}
@@ -282,9 +295,9 @@ export const CategoryRankingTable = ({ userTeamId = null }) => {
                             {item.bestGeneral.puntaje}{' '}
                             <span className="text-[10px] text-slate-500 font-bold">pts</span>
                           </span>
-                          <div className="w-16 h-1.5 bg-slate-200 rounded-full mt-1 overflow-hidden">
+                          <div className="w-16 h-2 bg-slate-200 rounded-full mt-1 overflow-hidden border border-slate-200">
                             <div
-                              className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full"
+                              className="h-full bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-400 rounded-full"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
@@ -297,7 +310,7 @@ export const CategoryRankingTable = ({ userTeamId = null }) => {
                     {/* Mejor Tiempo */}
                     <td className="p-3.5 text-center font-mono">
                       {hasRecords ? (
-                        <span className="font-bold text-slate-900 flex items-center justify-center gap-1.5 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                        <span className="font-bold text-slate-900 flex items-center justify-center gap-1.5 bg-slate-100/90 px-2 py-0.5 rounded border border-slate-200 shadow-sm">
                           <Clock className="w-3.5 h-3.5 text-blue-600" />
                           {item.bestGeneral.tiempo}
                         </span>
@@ -309,10 +322,10 @@ export const CategoryRankingTable = ({ userTeamId = null }) => {
                     {/* Récord en Regional */}
                     <td className="p-3.5 text-center">
                       {item.bestRegional ? (
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-50 text-amber-900 text-[11px] font-bold border border-amber-200">
-                          <Award className="w-3.5 h-3.5 text-amber-600" />
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-900 text-[11px] font-bold border border-amber-300 shadow-sm">
+                          <Award className="w-3.5 h-3.5 text-amber-700" />
                           <span>{item.bestRegional.puntaje} pts</span>
-                          <span className="text-amber-700 font-mono">({item.bestRegional.tiempo})</span>
+                          <span className="text-amber-800 font-mono">({item.bestRegional.tiempo})</span>
                         </div>
                       ) : (
                         <span className="text-slate-400 text-[11px]">Sin registro</span>
@@ -322,10 +335,10 @@ export const CategoryRankingTable = ({ userTeamId = null }) => {
                     {/* Récord en Práctica */}
                     <td className="p-3.5 text-center">
                       {item.bestPractica ? (
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-50 text-blue-900 text-[11px] font-bold border border-blue-200">
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-900 text-[11px] font-bold border border-blue-200 shadow-sm">
                           <Sparkles className="w-3.5 h-3.5 text-blue-600" />
                           <span>{item.bestPractica.puntaje} pts</span>
-                          <span className="text-blue-700 font-mono">({item.bestPractica.tiempo})</span>
+                          <span className="text-blue-800 font-mono">({item.bestPractica.tiempo})</span>
                         </div>
                       ) : (
                         <span className="text-slate-400 text-[11px]">Sin registro</span>

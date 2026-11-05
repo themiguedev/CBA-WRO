@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { getTeams, getCategories } from '../../services/storageService';
-import { Bot, Users, ShieldCheck, X, LogIn, UserPlus, KeyRound, Mail, User, Layers } from 'lucide-react';
+import { getTeams } from '../../services/storageService';
+import { Bot, Users, X, LogIn, UserPlus, KeyRound, Mail, Layers } from 'lucide-react';
 
 export const AuthModal = ({ isOpen, onClose }) => {
   const { login, register, switchUserFast } = useAuth();
   const teams = getTeams();
-  const categories = getCategories();
 
   const [mode, setMode] = useState('login'); // 'login' | 'register'
   const [errorMsg, setErrorMsg] = useState('');
