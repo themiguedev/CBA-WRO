@@ -185,7 +185,7 @@ export const AuthScreen = () => {
           <div className="mt-12 sm:mt-16 max-w-lg">
 
             <h1 className="text-3xl sm:text-4xl xl:text-5xl font-black text-white leading-tight tracking-tight">
-              Bitácora Técnica & Control Semanal de Equipos
+              Control Semanal de Equipos WRO
             </h1>
 
             <p className="mt-4 text-sm sm:text-base text-blue-100/80 leading-relaxed font-normal">
