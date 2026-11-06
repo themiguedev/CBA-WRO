@@ -1,12 +1,23 @@
 import React from 'react';
 import logoImg from '../../assets/logo.jpg';
 
-const EDGE_LAYERS = [-3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5];
+// 17 micro-capas (~0.4px de separación) para construir un canto metálico continuo y cilíndrico
+const THICKNESS_HALF = 3.2; // 6.4px de espesor físico total de la moneda
+const NUM_STEPS = 17;
+const EDGE_LAYERS = Array.from({ length: NUM_STEPS }, (_, i) => {
+  const z = -THICKNESS_HALF + i * ((2 * THICKNESS_HALF) / (NUM_STEPS - 1));
+  const ratio = Math.abs(z) / THICKNESS_HALF;
+  const alpha = Math.max(0.4, 0.85 - 0.45 * ratio);
+  return {
+    z: Number(z.toFixed(2)),
+    borderColor: `rgba(147, 197, 253, ${alpha.toFixed(2)})`
+  };
+});
 
 export const CoinLogo = ({
   size = 'w-16 h-16',
   className = '',
-  ringClass = 'border-2 border-white/90 shadow-2xl shadow-blue-500/50 ring-4 ring-blue-500/30',
+  ringClass = 'border-2 border-white/95 shadow-2xl shadow-blue-500/50 ring-4 ring-blue-500/30',
   autoSpin = true,
   showShadow = true
 }) => {
@@ -18,19 +29,10 @@ export const CoinLogo = ({
       <style>{`
         @keyframes coinSpin3D {
           0% {
-            transform: rotateY(0deg) rotateX(14deg);
-          }
-          25% {
-            transform: rotateY(90deg) rotateX(6deg);
-          }
-          50% {
-            transform: rotateY(180deg) rotateX(14deg);
-          }
-          75% {
-            transform: rotateY(270deg) rotateX(6deg);
+            transform: rotateY(0deg) rotateX(9deg);
           }
           100% {
-            transform: rotateY(360deg) rotateX(14deg);
+            transform: rotateY(360deg) rotateX(9deg);
           }
         }
 
@@ -46,145 +48,158 @@ export const CoinLogo = ({
         @keyframes coinShadowPulse {
           0%, 50%, 100% {
             transform: scaleX(1) scaleY(1);
-            opacity: 0.55;
+            opacity: 0.6;
           }
           25%, 75% {
-            transform: scaleX(0.35) scaleY(0.7);
+            transform: scaleX(0.35) scaleY(0.75);
             opacity: 0.25;
           }
         }
 
-        @keyframes coinShinePass {
+        @keyframes coinGlintSweep {
           0% {
-            background-position: -200% 0;
+            transform: translateX(-150%) skewX(-25deg);
             opacity: 0;
           }
-          20%, 35% {
-            opacity: 0.95;
+          15%, 35% {
+            opacity: 0.4;
           }
-          50% {
-            background-position: 200% 0;
-            opacity: 0;
-          }
-          70%, 85% {
-            opacity: 0.95;
-          }
-          100% {
-            background-position: 200% 0;
+          55%, 100% {
+            transform: translateX(150%) skewX(-25deg);
             opacity: 0;
           }
         }
 
         .coin-spinning-3d {
-          animation: coinSpin3D 3.2s linear infinite !important;
+          animation: coinSpin3D 3.8s linear infinite !important;
           transform-style: preserve-3d !important;
           -webkit-transform-style: preserve-3d !important;
           will-change: transform;
         }
 
-        .coin-spinning-3d:hover {
-          animation-duration: 1.4s !important;
-        }
-
         .coin-floating-3d {
-          animation: coinFloat3D 3.2s ease-in-out infinite;
+          animation: coinFloat3D 3.8s ease-in-out infinite;
         }
 
         .coin-shadow-3d {
-          animation: coinShadowPulse 3.2s linear infinite;
+          animation: coinShadowPulse 3.8s linear infinite;
+        }
+
+        .coin-3d-root {
+          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .coin-3d-root:hover {
+          transform: translateY(-4px) scale(1.08);
+        }
+
+        .coin-3d-root:hover .coin-face-glow {
+          opacity: 0.9;
         }
       `}</style>
 
       {/* Contenedor con Perspectiva 3D */}
       <div
         className={`coin-wrapper ${size} relative ${autoSpin ? 'coin-floating-3d' : ''}`}
-        style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
+        style={{ perspective: '1200px', WebkitPerspective: '1200px', transformStyle: 'preserve-3d' }}
       >
-        {/* Moneda 3D con Espesor Físico */}
+        {/* Moneda 3D con Canto Metálico Cilíndrico Continuo */}
         <div
           className={`coin-inner w-full h-full relative ${autoSpin ? 'coin-spinning-3d' : ''}`}
-          style={{ transformStyle: 'preserve-3d' }}
+          style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
         >
-          {/* Capas intermedias que construyen el canto/espesor tridimensional de la moneda */}
-          {EDGE_LAYERS.map((z, idx) => (
+          {/* Micro-capas cilíndricas del canto (espesor sólido y continuo sin saltos de sierra) */}
+          {EDGE_LAYERS.map((layer, idx) => (
             <div
               key={idx}
               className="absolute inset-0 rounded-full pointer-events-none"
               style={{
-                transform: `translateZ(${z}px)`,
-                border: '2.5px solid rgba(191, 219, 254, 0.95)',
-                background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #bfdbfe 50%, #2563eb 65%, #172554 100%)',
-                boxShadow: 'inset 0 0 3px rgba(0, 0, 0, 0.55)'
+                transform: `translateZ(${layer.z}px)`,
+                WebkitTransform: `translateZ(${layer.z}px)`,
+                background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #1e3a8a 100%)',
+                border: `1.2px solid ${layer.borderColor}`
               }}
             />
           ))}
 
-          {/* Cara Frontal con Bisel 3D */}
+          {/* Cara Frontal (con relieve 3D y brillo controlado) */}
           <div
-            className={`coin-face coin-front ${ringClass} rounded-full overflow-hidden`}
+            className={`coin-face coin-face-front ${ringClass} rounded-full`}
             style={{
               position: 'absolute',
               inset: 0,
               width: '100%',
               height: '100%',
+              borderRadius: '9999px',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
-              transform: 'translateZ(4.5px)',
-              boxShadow: 'inset 0 0 0 2px rgba(255,255,255,0.7), inset 0 0 8px rgba(0,0,0,0.4), 0 0 20px rgba(59,130,246,0.4)'
+              transform: `translateZ(${(THICKNESS_HALF + 0.18).toFixed(2)}px)`,
+              WebkitTransform: `translateZ(${(THICKNESS_HALF + 0.18).toFixed(2)}px)`,
+              boxShadow: '0 0 0 2px rgba(255, 255, 255, 0.95), 0 0 16px rgba(37, 99, 235, 0.45)',
+              background: '#0f172a'
             }}
           >
             <img
               src={logoImg}
               alt="Team Bellas Artes Bots"
-              className="w-full h-full rounded-full object-cover pointer-events-none"
+              className="w-full h-full rounded-full object-cover pointer-events-none select-none block"
             />
-            {/* Destello reflectante */}
-            <div
-              className="absolute inset-0 rounded-full pointer-events-none"
-              style={{
-                background: 'linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.4) 47%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.4) 53%, transparent 70%)',
-                backgroundSize: '200% 200%',
-                animation: 'coinShinePass 3.2s linear infinite'
-              }}
-            />
+            {/* Resplandor metálico sutil no invasivo */}
+            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
+              <div
+                className="absolute -top-1/2 left-0 w-2/3 h-[200%]"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.45) 50%, transparent 100%)',
+                  animation: 'coinGlintSweep 3.8s ease-in-out infinite'
+                }}
+              />
+            </div>
+            {/* Halo de realce interactivo */}
+            <div className="coin-face-glow absolute inset-0 rounded-full ring-2 ring-blue-400/60 opacity-0 transition-opacity duration-300 pointer-events-none" />
           </div>
 
-          {/* Cara Trasera con Bisel 3D (orientada hacia el espectador al dar la vuelta) */}
+          {/* Cara Trasera (perfectamente orientada, NO espejo, nítida y simétrica) */}
           <div
-            className={`coin-face coin-back ${ringClass} rounded-full overflow-hidden`}
+            className={`coin-face coin-face-back ${ringClass} rounded-full`}
             style={{
               position: 'absolute',
               inset: 0,
               width: '100%',
               height: '100%',
+              borderRadius: '9999px',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
-              transform: 'rotateY(180deg) translateZ(4.5px)',
-              boxShadow: 'inset 0 0 0 2px rgba(255,255,255,0.7), inset 0 0 8px rgba(0,0,0,0.4), 0 0 20px rgba(59,130,246,0.4)'
+              transform: `rotateY(180deg) translateZ(${(THICKNESS_HALF + 0.18).toFixed(2)}px)`,
+              WebkitTransform: `rotateY(180deg) translateZ(${(THICKNESS_HALF + 0.18).toFixed(2)}px)`,
+              boxShadow: '0 0 0 2px rgba(255, 255, 255, 0.95), 0 0 16px rgba(37, 99, 235, 0.45)',
+              background: '#0f172a'
             }}
           >
             <img
               src={logoImg}
               alt="Team Bellas Artes Bots"
-              className="w-full h-full rounded-full object-cover pointer-events-none"
+              className="w-full h-full rounded-full object-cover pointer-events-none select-none block"
             />
-            {/* Destello reflectante */}
-            <div
-              className="absolute inset-0 rounded-full pointer-events-none"
-              style={{
-                background: 'linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.4) 47%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.4) 53%, transparent 70%)',
-                backgroundSize: '200% 200%',
-                animation: 'coinShinePass 3.2s linear infinite'
-              }}
-            />
+            {/* Resplandor metálico sutil no invasivo */}
+            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
+              <div
+                className="absolute -top-1/2 left-0 w-2/3 h-[200%]"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.45) 50%, transparent 100%)',
+                  animation: 'coinGlintSweep 3.8s ease-in-out infinite'
+                }}
+              />
+            </div>
+            {/* Halo de realce interactivo */}
+            <div className="coin-face-glow absolute inset-0 rounded-full ring-2 ring-blue-400/60 opacity-0 transition-opacity duration-300 pointer-events-none" />
           </div>
         </div>
       </div>
 
-      {/* Sombra 3D inferior que acompaña el espesor y rotación */}
+      {/* Sombra 3D sincronizada en profundidad y perspectiva */}
       {showShadow && (
         <div
-          className="coin-shadow-3d h-1.5 w-10 sm:w-12 bg-blue-950/80 rounded-full blur-[2px] mt-1 pointer-events-none"
+          className="coin-shadow-3d h-1.5 w-10 sm:w-12 bg-blue-950/80 rounded-full blur-[2px] mt-1.5 pointer-events-none"
         />
       )}
     </div>
